@@ -16,19 +16,36 @@ import com.example.repository.ItemRepository;
  */
 @Service
 public class ItemService {
-	
+
 	@Autowired
 	private ItemRepository itemRepository;
-	
+
 	/**
 	 * ページ番号に該当する商品情報一覧を取得する.
 	 * 
 	 * @param pageNum ページ番号
 	 * @return 商品情報一覧
 	 */
-	public List<Item> searchItemList(Integer pageNumber){
+	public List<Item> searchItemList(Integer pageNumber) {
 		List<Item> itemList = itemRepository.findByPageNumber(pageNumber);
 		return itemList;
+	}
+
+	/**
+	 * 総ページ数を計算する.
+	 * 
+	 * @return 総ページ数
+	 */
+	public Integer countTotalPageNumber() {
+		int itemNumberPerPage = 30;
+		int totalPageNumber = 0;
+		int totalItemNumber = itemRepository.countTotalItemNumber();
+		if (totalItemNumber % 30 == 0) {
+			totalPageNumber = totalItemNumber / itemNumberPerPage;
+		} else {
+			totalPageNumber = totalItemNumber / itemNumberPerPage + 1;
+		}
+		return totalPageNumber;
 	}
 
 }

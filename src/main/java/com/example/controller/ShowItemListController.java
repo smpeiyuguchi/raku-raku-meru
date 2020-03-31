@@ -33,8 +33,10 @@ public class ShowItemListController {
 	@RequestMapping("/")
 	public String showItemList(Model model, Integer pageNumber) {
 		pageNumber = 1;
+		int totalPageNumber = itemService.countTotalPageNumber();
 		List<Item> itemList = itemService.searchItemList(pageNumber);
 		model.addAttribute("itemList", itemList);
+		model.addAttribute("totalPageNumber", totalPageNumber);
 		return "list";
 	}
 }

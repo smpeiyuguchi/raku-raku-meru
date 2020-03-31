@@ -3,6 +3,7 @@ package com.example.repository;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -32,6 +33,9 @@ public class ItemRepository {
 		item.setDescription(rs.getString("description"));
 		return item;
 	};
+	
+	@Autowired
+	private JdbcTemplate jdbc;
 
 	@Autowired
 	private NamedParameterJdbcTemplate template;
@@ -53,6 +57,17 @@ public class ItemRepository {
 				.addValue("offsetNumber", offsetNumber);
 		List<Item> itemList = template.query(sql, param, ITEM_ROW_MAPPER);
 		return itemList;
+	}
+	
+	/**
+	 * 商品の合計数をカウントする.
+	 * 
+	 * @return 商品の合計数
+	 */
+	public Integer countTotalItemNumber() {
+		String sql = "SELECT COUNT(*) FROM items";
+		int totalItemNumber = jdbc.queryForObject(sql, Integer.class);
+		return totalItemNumber;
 	}
 
 }
