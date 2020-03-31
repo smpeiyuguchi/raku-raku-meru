@@ -1,5 +1,7 @@
 package com.example.domain;
 
+import java.util.List;
+
 /**
  * itemsテーブルの情報を格納するエンティティ.
  * 
@@ -24,13 +26,14 @@ public class Item {
 	private Integer shipping;
 	/** 説明 */
 	private String description;
+	/** カテゴリー名のリスト */
+	private List<String> categoryNameList;
 
 	public Item() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public Item(Integer id, String name, Integer condition, Integer category, String brand, double price,
-			Integer shipping, String description) {
+			Integer shipping, String description, List<String> categoryNameList) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -40,12 +43,7 @@ public class Item {
 		this.price = price;
 		this.shipping = shipping;
 		this.description = description;
-	}
-
-	@Override
-	public String toString() {
-		return "Item [id=" + id + ", name=" + name + ", condition=" + condition + ", category=" + category + ", brand="
-				+ brand + ", price=" + price + ", shipping=" + shipping + ", description=" + description + "]";
+		this.categoryNameList = categoryNameList;
 	}
 
 	public Integer getId() {
@@ -110,6 +108,21 @@ public class Item {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public List<String> getCategoryNameList() {
+		return categoryNameList;
+	}
+
+	public void setCategoryNameList(List<String> categoryNameList) {
+		this.categoryNameList = categoryNameList;
+	}
+
+	@Override
+	public String toString() {
+		return "Item [id=" + id + ", name=" + name + ", condition=" + condition + ", category=" + category + ", brand="
+				+ brand + ", price=" + price + ", shipping=" + shipping + ", description=" + description
+				+ ", categoryNameList=" + categoryNameList + "]";
 	}
 
 }

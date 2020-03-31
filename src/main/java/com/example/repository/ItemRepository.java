@@ -1,5 +1,6 @@
 package com.example.repository;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,17 +24,19 @@ public class ItemRepository {
 
 	private final static RowMapper<Item> ITEM_ROW_MAPPER = (rs, i) -> {
 		Item item = new Item();
-		item.setId(rs.getInt("id"));
-		item.setName(rs.getString("name"));
-		item.setCondition(rs.getInt("condition"));
-		item.setCategory(rs.getInt("category"));
-		item.setBrand(rs.getString("brand"));
-		item.setPrice(rs.getDouble("price"));
-		item.setShipping(rs.getInt("shipping"));
-		item.setDescription(rs.getString("description"));
+		item.setId(rs.getInt("i_id"));
+		item.setName(rs.getString("i_name"));
+		item.setCondition(rs.getInt("i_condition"));
+		item.setCategory(rs.getInt("i_category"));
+		item.setBrand(rs.getString("i_brand"));
+		item.setPrice(rs.getDouble("i_price"));
+		item.setShipping(rs.getInt("i_shipping"));
+		item.setDescription(rs.getString("i_description"));
+		List<String> categoryNameList = Arrays.asList(rs.getString("c_name_all").split("/"));
+		item.setCategoryNameList(categoryNameList);
 		return item;
 	};
-	
+
 	@Autowired
 	private JdbcTemplate jdbc;
 
@@ -51,14 +54,16 @@ public class ItemRepository {
 		int limitNumber = 30;
 		// 取得する行までに除外する行数を指定
 		int offsetNumber = (pageNumber - 1) * limitNumber;
-		String sql = "SELECT id, name, condition, category, brand, price, shipping, description "
-				+ "FROM items ORDER BY id LIMIT :limitNumber OFFSET :offsetNumber ";
+		String sql = "SELECT i.id i_id, i.name i_name, i.condition i_condition, i.category i_category, "
+				+ "i.brand i_brand, i.price i_price, i.shipping i_shipping, i.description i_description, c.name_all c_name_all "
+				+ "FROM items i LEFT OUTER JOIN category c ON i.category = c.id ORDER BY i.id "
+				+ "LIMIT :limitNumber OFFSET :offsetNumber";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("limitNumber", limitNumber)
 				.addValue("offsetNumber", offsetNumber);
 		List<Item> itemList = template.query(sql, param, ITEM_ROW_MAPPER);
 		return itemList;
 	}
-	
+
 	/**
 	 * 商品の合計数をカウントする.
 	 * 
