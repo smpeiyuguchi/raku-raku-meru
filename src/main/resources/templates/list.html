@@ -132,11 +132,11 @@
       </nav>
       <!-- ページ番号を指定して表示するフォーム -->
       <div id="select-page">
-        <form class="form-inline">
+        <form class="form-inline" th:action="@{/}">
           <div class="form-group">
             <div class="input-group col-xs-6">
               <label></label>
-              <input type="text" class="form-control"/>
+              <input type="text" name="pageNumber" class="form-control" th:placeholder="${pageNumber}">
               <!-- 総ページ数 -->
               <div class="input-group-addon">/ <span th:text="${#numbers.formatInteger(totalPageNumber,0,'COMMA')}">20</span></div>
             </div>
