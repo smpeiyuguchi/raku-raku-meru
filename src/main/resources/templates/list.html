@@ -92,8 +92,8 @@
     <div class="pages">
       <nav class="page-nav">
         <ul class="pager">
-          <li class="previous"><a href="#">&larr; prev</a></li>
-          <li class="next"><a href="#">next &rarr;</a></li>
+          <li class="previous"><a href="#" th:href="@{'/?pageNumber=' + ${pageNumber - 1}}">&larr; prev</a></li>
+          <li class="next"><a href="#" th:href="@{'/?pageNumber=' + ${pageNumber + 1}}">next &rarr;</a></li>
         </ul>
       </nav>
     </div>
@@ -126,8 +126,8 @@
     <div class="pages">
       <nav class="page-nav">
         <ul class="pager">
-          <li class="previous"><a href="#">&larr; prev</a></li>
-          <li class="next"><a href="#">next &rarr;</a></li>
+          <li class="previous"><a href="#" th:href="@{'/?pageNumber=' + ${pageNumber - 1}}">&larr; prev</a></li>
+          <li class="next"><a href="#" th:href="@{'/?pageNumber=' + ${pageNumber + 1}}">next &rarr;</a></li>
         </ul>
       </nav>
       <!-- ページ番号を指定して表示するフォーム -->
