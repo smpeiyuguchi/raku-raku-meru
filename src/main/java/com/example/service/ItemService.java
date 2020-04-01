@@ -44,12 +44,16 @@ public class ItemService {
 	 */
 	public List<Item> searchItemListByMultipleCondition(int largeCategory, int middleCategory, int smallCategory,
 			String name, String brand, int pageNumber) {
+		if (name == null) {
+			name = " ";
+		}
 		List<Item> itemList = null;
 		if (brand != null) {
 			itemList = itemRepository.findBySearchCondition(largeCategory, middleCategory, smallCategory, name, brand,
 					pageNumber);
 		} else {
-			itemList = itemRepository.findBySearchCondition(largeCategory, middleCategory, smallCategory, name, pageNumber);
+			itemList = itemRepository.findBySearchCondition(largeCategory, middleCategory, smallCategory, name,
+					pageNumber);
 		}
 		return itemList;
 	}

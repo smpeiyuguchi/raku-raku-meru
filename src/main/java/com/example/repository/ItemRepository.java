@@ -94,7 +94,7 @@ public class ItemRepository {
 	}
 
 	/**
-	 * 複数の検索条件から商品情報一覧を取得する(ブランド名なし）
+	 * 複数の検索条件から商品情報一覧を取得する(ブランド指定なし）
 	 * 
 	 * @param largeCategory  大カテゴリーID
 	 * @param middleCategory 中カテゴリーID
@@ -119,12 +119,16 @@ public class ItemRepository {
 		sql.append("WHERE c1.id = CASE WHEN :largeCategory IS NOT NULL THEN :largeCategory ELSE c1.id END ");
 		sql.append("AND c2.id = CASE WHEN :middleCategory IS NOT NULL THEN :middleCategory ELSE c2.id END ");
 		sql.append("AND c3.id = CASE WHEN :smallCategory IS NOT NULL THEN :smallCategory ELSE c3.id END ");
-		sql.append("AND i.name LIKE :name ");
+		sql.append("AND i.name LIKE :name " );
 		sql.append("ORDER BY c1.id LIMIT :limitNumber OFFSET :offsetNumber");
-		SqlParameterSource param = new MapSqlParameterSource().addValue("largeCategory", largeCategory)
-				.addValue("middleCategory", middleCategory).addValue("smallCategory", smallCategory)
+		SqlParameterSource param = new MapSqlParameterSource()
+				.addValue("largeCategory", largeCategory)
+				.addValue("middleCategory", middleCategory)
+				.addValue("smallCategory", smallCategory)
 				.addValue("name", "%" + name + "%")
-				.addValue("limitNumber", limitNumber).addValue("offsetNumber", offsetNumber);
+				.addValue("limitNumber", limitNumber)
+				.addValue("offsetNumber", offsetNumber);
+		System.out.println(sql);
 		List<Item> itemList = template.query(sql.toString(), param, ITEM_CATEGORY_ROW_MAPPER);
 		return itemList;
 	}
@@ -156,7 +160,7 @@ public class ItemRepository {
 		sql.append("WHERE c1.id = CASE WHEN :largeCategory IS NOT NULL THEN :largeCategory ELSE c1.id END ");
 		sql.append("AND c2.id = CASE WHEN :middleCategory IS NOT NULL THEN :middleCategory ELSE c2.id END ");
 		sql.append("AND c3.id = CASE WHEN :smallCategory IS NOT NULL THEN :smallCategory ELSE c3.id END ");
-		sql.append("AND i.name LIKE :name ");
+		sql.append("AND i.name LIKE CASE WHEN :name IS NOT NULL THEN :name ELSE i.name END ");
 		sql.append("AND i.brand LIKE :brand "); //ブランド指定
 		sql.append("ORDER BY c1.id LIMIT :limitNumber OFFSET :offsetNumber");
 		SqlParameterSource param = new MapSqlParameterSource().addValue("largeCategory", largeCategory)
