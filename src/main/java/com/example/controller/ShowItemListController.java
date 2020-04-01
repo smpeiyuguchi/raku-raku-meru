@@ -31,12 +31,28 @@ public class ShowItemListController {
 	 * @return 商品一覧画面
 	 */
 	@RequestMapping("/")
-	public String showItemList(Model model, Integer pageNumber) {
-		if (pageNumber == null) {
-			pageNumber = 1;
-		}
+	public String showItemList(Model model, Integer largeCategory, Integer middleCategory, Integer smallCategory,
+			String name, String brand, Integer pageNumber) {
+//		if (pageNumber == null) {
+//			pageNumber = 1;
+//		}
+		// 仮パラメータ
+		largeCategory = 1;
+		middleCategory = 11;
+		smallCategory = 150;
+		name = "PINK";
+//		brand = "V";
+		pageNumber = 1;
+
+		List<Item> itemList = null;
 		int totalPageNumber = itemService.countTotalPageNumber();
-		List<Item> itemList = itemService.searchItemList(pageNumber);
+		if (brand != null) {
+			itemList = itemService.searchItemListByMultipleCondition(largeCategory, middleCategory, smallCategory, name,
+					brand, pageNumber);
+		} else {
+			itemList = itemService.searchItemListByMultipleCondition(largeCategory, middleCategory, smallCategory, name,
+					pageNumber);
+		};
 		model.addAttribute("itemList", itemList);
 		model.addAttribute("totalPageNumber", totalPageNumber);
 		model.addAttribute("pageNumber", pageNumber);

@@ -26,9 +26,41 @@ public class ItemService {
 	 * @param pageNum ページ番号
 	 * @return 商品情報一覧
 	 */
-	public List<Item> searchItemList(Integer pageNumber) {
+	public List<Item> searchItemList(int pageNumber) {
 		List<Item> itemList = itemRepository.findByPageNumber(pageNumber);
 		return itemList;
+	}
+
+	/**
+	 * 複数の検索条件から商品情報一覧を取得する（ブランド指定なし）
+	 * 
+	 * @param largeCategory  大カテゴリーID
+	 * @param middleCategory 中カテゴリーID
+	 * @param smallCategory  小カテゴリーID
+	 * @param name           名前
+	 * @param pageNumber     ページ番号
+	 * @return 商品情報一覧
+	 */
+	public List<Item> searchItemListByMultipleCondition(int largeCategory, int middleCategory, int smallCategory,
+			String name, int pageNumber) {
+		return itemRepository.findBySearchCondition(largeCategory, middleCategory, smallCategory, name, pageNumber);
+	}
+
+	/**
+	 * 複数の検索条件から商品情報一覧を取得する（ブランド指定あり）
+	 * 
+	 * @param largeCategory  大カテゴリーID
+	 * @param middleCategory 中カテゴリーID
+	 * @param smallCategory  小カテゴリーID
+	 * @param name           名前
+	 * @param brand          ブランド
+	 * @param pageNumber     ページ番号
+	 * @return 商品情報一覧
+	 */
+	public List<Item> searchItemListByMultipleCondition(int largeCategory, int middleCategory, int smallCategory,
+			String name, String brand, int pageNumber) {
+		return itemRepository.findBySearchCondition(largeCategory, middleCategory, smallCategory, name, brand,
+				pageNumber);
 	}
 
 	/**
