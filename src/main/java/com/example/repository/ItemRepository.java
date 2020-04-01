@@ -100,7 +100,6 @@ public class ItemRepository {
 	 * @param middleCategory 中カテゴリーID
 	 * @param smallCategory  小カテゴリーID
 	 * @param name           名前
-	 * @param brand          ブランド
 	 * @param pageNumber     ページ番号
 	 * @return 商品情報一覧
 	 */
