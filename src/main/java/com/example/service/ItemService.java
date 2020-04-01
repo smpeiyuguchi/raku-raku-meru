@@ -49,7 +49,7 @@ public class ItemService {
 			itemList = itemRepository.findBySearchCondition(largeCategory, middleCategory, smallCategory, name, brand,
 					pageNumber);
 		} else {
-			itemRepository.findBySearchCondition(largeCategory, middleCategory, smallCategory, name, pageNumber);
+			itemList = itemRepository.findBySearchCondition(largeCategory, middleCategory, smallCategory, name, pageNumber);
 		}
 		return itemList;
 	}
