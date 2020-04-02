@@ -32,28 +32,38 @@ public class ItemService {
 	}
 
 	/**
-	 * 複数の検索条件から商品情報一覧を取得する（ブランド指定あり）
+	 * 複数の検索条件から商品情報一覧を取得する
 	 * 
-	 * @param largeCategory  大カテゴリーID
-	 * @param middleCategory 中カテゴリーID
-	 * @param smallCategory  小カテゴリーID
-	 * @param name           名前
-	 * @param brand          ブランド
-	 * @param pageNumber     ページ番号
+	 * @param parentId     親カテゴリーID
+	 * @param childId      子カテゴリーID
+	 * @param grandChildId 孫カテゴリーID
+	 * @param name         名前
+	 * @param brand        ブランド
+	 * @param pageNumber   ページ番号
 	 * @return 商品情報一覧
 	 */
-	public List<Item> searchItemListByMultipleCondition(int largeCategory, int middleCategory, int smallCategory,
+	public List<Item> searchItemListByMultipleCondition(Integer parentId, Integer childId, Integer grandChildId,
 			String name, String brand, int pageNumber) {
+		List<Item> itemList = null;
 		if (name == null) {
 			name = " ";
 		}
-		List<Item> itemList = null;
-		if (brand != null) {
-			itemList = itemRepository.findBySearchCondition(largeCategory, middleCategory, smallCategory, name, brand,
-					pageNumber);
+		if (brand == null) {
+			brand = " ";
+		}
+		// カテゴリーの検索値の有無によって条件分岐
+		if (grandChildId != null) {
+			System.out.println("孫カテゴリで検索");
+			itemList = itemRepository.findByGrandChildAndSearchValue(grandChildId, name, brand, pageNumber);
+		} else if (childId != null) {
+			System.out.println("子カテゴリで検索");
+			itemList = itemRepository.findByChildAndSearchValue(childId, name, brand, pageNumber);
+		} else if (parentId != null) {
+			System.out.println("親カテゴリで検索");
+			itemList = itemRepository.findByParentAndSearchValue(parentId, name, brand, pageNumber);
 		} else {
-			itemList = itemRepository.findBySearchCondition(largeCategory, middleCategory, smallCategory, name,
-					pageNumber);
+			System.out.println("名前・ブランド・検索なしで検索");
+			itemList = itemRepository.findByNameAndBrand(name, brand, pageNumber);
 		}
 		return itemList;
 	}

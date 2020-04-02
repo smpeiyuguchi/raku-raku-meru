@@ -7,7 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.domain.Category;
 import com.example.domain.Item;
+import com.example.service.CategoryService;
 import com.example.service.ItemService;
 
 /**
@@ -22,6 +24,9 @@ public class ShowItemListController {
 
 	@Autowired
 	private ItemService itemService;
+	
+	@Autowired
+	private CategoryService categoryService;
 
 	/**
 	 * 商品情報一覧を表示する.
@@ -31,21 +36,29 @@ public class ShowItemListController {
 	 * @return 商品一覧画面
 	 */
 	@RequestMapping("/")
-	public String showItemList(Model model, Integer largeCategory, Integer middleCategory, Integer smallCategory,
+	public String showItemList(Model model, Integer parentId, Integer childId, Integer grandchildid,
 			String name, String brand, Integer pageNumber) {
 		if (pageNumber == null) {
 			pageNumber = 1;
 		}
 		// 仮パラメータ
-		largeCategory = 1;
-		middleCategory = 11;
-		smallCategory = 150;
+		parentId = 2;
+//		childId = 11;
+//		grandchildid = 150;
 		name = "PINK";
-//		brand = "V";
+		brand = "B";
 
-		List<Item> itemList = itemService.searchItemListByMultipleCondition(largeCategory, middleCategory,
-				smallCategory, name, brand, pageNumber);
+		List<Item> itemList = itemService.searchItemListByMultipleCondition(parentId, childId,
+				grandchildid, name, brand, pageNumber);
 		int totalPageNumber = itemService.countTotalPageNumber();
+		
+		//検索フォーム用カテゴリー情報を取得
+		List<Category> parentCategoryList = categoryService.searchParent();
+		List<Category> childCategoryList = categoryService.searchChild();
+		List<Category> grandchildCategoryList = categoryService.searchGrandChild();
+		model.addAttribute("parentCategoryList", parentCategoryList);
+		model.addAttribute("childCategoryList", childCategoryList);
+		model.addAttribute("grandchildCategoryList", grandchildCategoryList);
 
 		model.addAttribute("itemList", itemList);
 		model.addAttribute("totalPageNumber", totalPageNumber);
