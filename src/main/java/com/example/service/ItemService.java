@@ -21,17 +21,6 @@ public class ItemService {
 	private ItemRepository itemRepository;
 
 	/**
-	 * ページ番号に該当する商品情報一覧を取得する.
-	 * 
-	 * @param pageNum ページ番号
-	 * @return 商品情報一覧
-	 */
-	public List<Item> searchItemList(int pageNumber) {
-		List<Item> itemList = itemRepository.findByPageNumber(pageNumber);
-		return itemList;
-	}
-
-	/**
 	 * 複数の検索条件から商品情報一覧を取得する
 	 * 
 	 * @param parentId     親カテゴリーID
