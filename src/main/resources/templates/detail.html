@@ -18,27 +18,8 @@
   <title>Rakus Items</title>
 </head>
 <body>
-  <!-- navbar -->
-  <nav class="navbar navbar-inverse">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="./list.html">Rakus Items</a>
-    </div>
-    <div id="navbar" class="collapse navbar-collapse">
-      <div>
-        <ul class="nav navbar-nav navbar-right">
-          <li><a id="logout" href="./login.html">Logout&nbsp;<i class="fa fa-power-off"></i></a></li>
-        </ul>
-        <p class="navbar-text navbar-right">
-          <span id="loginName">user: userName</span>
-        </p>
-      </div>
-    </div>
-  </nav>
+  
+  <nav th:insert="header :: frag_header"></nav>
 
   <!-- details -->
   <div class="container">
