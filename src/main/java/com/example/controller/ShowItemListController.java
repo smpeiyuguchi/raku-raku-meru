@@ -36,23 +36,23 @@ public class ShowItemListController {
 	 * @return 商品一覧画面
 	 */
 	@RequestMapping("/")
-	public String showItemList(Model model, Integer parentId, Integer childId, Integer grandchildid,
+	public String showItemList(Model model, Integer parentId, Integer childId, Integer grandChildId,
 			String name, String brand, Integer pageNumber) {
 		if (pageNumber == null) {
 			pageNumber = 1;
 		}
 
 		List<Item> itemList = itemService.searchItemListByMultipleCondition(parentId, childId,
-				grandchildid, name, brand, pageNumber);
+				grandChildId, name, brand, pageNumber);
 		int totalPageNumber = itemService.countTotalPageNumber();
 		
 		//検索フォーム用カテゴリー情報を取得
 		List<Category> parentCategoryList = categoryService.searchParent();
 		List<Category> childCategoryList = categoryService.searchChild();
-		List<Category> grandchildCategoryList = categoryService.searchGrandChild();
+		List<Category> grandChildCategoryList = categoryService.searchGrandChild();
 		model.addAttribute("parentCategoryList", parentCategoryList);
 		model.addAttribute("childCategoryList", childCategoryList);
-		model.addAttribute("grandchildCategoryList", grandchildCategoryList);
+		model.addAttribute("grandChildCategoryList", grandChildCategoryList);
 
 		model.addAttribute("itemList", itemList);
 		model.addAttribute("totalPageNumber", totalPageNumber);
