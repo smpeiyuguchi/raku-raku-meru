@@ -16,37 +16,51 @@ import com.example.repository.CategoryRepository;
  */
 @Service
 public class CategoryService {
-	
+
 	@Autowired
 	private CategoryRepository categoryRepository;
-	
+
 	/**
 	 * 親カテゴリ情報を全件取得する.
 	 * 
-	 * @return　親カテゴリ情報
+	 * @return 親カテゴリ情報
 	 */
-	public List<Category> searchParent(){
+	public List<Category> searchParent() {
 		return categoryRepository.findParent();
 	}
-	
+
 	/**
 	 * 子カテゴリ情報を全件取得する.
 	 * 
-	 * @return　子カテゴリ情報
+	 * @return 子カテゴリ情報
 	 */
-	public List<Category> searchChild(){
+	public List<Category> searchChild() {
 		return categoryRepository.findChild();
 	}
-	
+
+	/**
+	 * 親カテゴリIDから子カテゴリ情報を取得する.
+	 * 
+	 * @param parenId 親カテゴリID
+	 * @return 子カテゴリ情報
+	 */
+	public List<Category> searchChildByParentId(Integer parentId) {
+		List<Category> categoryList = null;
+		if (parentId == 0) {
+			categoryList = categoryRepository.findChild();
+		} else {
+			categoryList = categoryRepository.findChildByParentId(parentId);
+		}
+		return categoryList;
+	}
+
 	/**
 	 * 孫カテゴリ情報を全件取得する.
 	 * 
-	 * @return　孫カテゴリ情報
+	 * @return 孫カテゴリ情報
 	 */
-	public List<Category> searchGrandChild(){
+	public List<Category> searchGrandChild() {
 		return categoryRepository.findGrandChild();
 	}
-	
-	
 
 }

@@ -54,16 +54,16 @@
         </div>
         <div class="form-group"><i class="fa fa-plus"></i></div>
         <div class="form-group">
-          <select class="form-control" name="parentId">
-            <option th:value="null">- parentCategory -</option>
+          <select class="form-control" name="parentId" id="parent">
+            <option th:value="0">- parentCategory -</option>
             <option th:each="parentCategory:${parentCategoryList}" th:value="${parentCategory.id}" th:text="${parentCategory.name}">parentCategory1</option>
           </select>
-          <select class="form-control" name="childId">
-            <option th:value="null">- childCategory -</option>
+          <select class="form-control" name="childId" id="child">
+            <option th:value="0">- childCategory -</option>
             <option th:each="childCategory:${childCategoryList}" th:value="${childCategory.id}" th:text="${childCategory.name}">childCategory1</option>
           </select>
-          <select class="form-control" name="grandchildid">
-            <option th:value="null">- grandChild -</option>
+          <select class="form-control" name="grandchildid" id="grandchild">
+            <option th:value="0">- grandChild -</option>
             <option th:each="childCategory:${childCategoryList}" th:value="${childCategory.id}" th:text="${childCategory.name}">grandChild1</option>
           </select>
         </div>
@@ -140,5 +140,7 @@
       </div>
     </div>
   </div>
+  <!-- 検索フォームのソースファイルを読み込み -->
+  <script th:src="@{/js/search-form.js}"></script>
 </body>
 </html>

@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 //import com.example.domain.AllCategory;
@@ -53,39 +55,48 @@ public class CategoryRepository {
 //				+ "INNER JOIN category c3 ON c2.id = c3.parent ORDER BY c1.id";
 //		return template.query(sql, ALL_CATEGORY_ROW_MAPPER);
 //	}
-	
+
 	/**
 	 * 親カテゴリ情報を全て取得する.
 	 * 
 	 * @return 親カテゴリ情報
 	 */
-	public List<Category> findParent(){
+	public List<Category> findParent() {
 		String sql = "SELECT id, parent, name FROM category WHERE parent IS NULL AND name_all IS NULL ORDER BY name";
 		return template.query(sql, CATEGORY_ROW_MAPPER);
 	}
-	
+
 	/**
 	 * 子カテゴリ情報を全て取得する.
 	 * 
 	 * @return 子カテゴリ情報
 	 */
-	public List<Category> findChild(){
+	public List<Category> findChild() {
 		String sql = "SELECT id, parent, name FROM category WHERE parent IS NOT NULL AND name_all IS NULL ORDER BY name";
 		return template.query(sql, CATEGORY_ROW_MAPPER);
 	}
-	
+
+	/**
+	 * 親カテゴリIDから子カテゴリ情報を全て取得する.
+	 * 
+	 * @param parentId 親カテゴリID
+	 * @return 子カテゴリ情報
+	 */
+	public List<Category> findChildByParentId(Integer parentId) {
+		String sql = "SELECT id, parent, name FROM category WHERE parent = :parentId AND name_all IS NULL ORDER BY name";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("parentId", parentId);
+		System.out.println(template.query(sql, param, CATEGORY_ROW_MAPPER));
+		return template.query(sql, param, CATEGORY_ROW_MAPPER);
+	}
+
 	/**
 	 * 孫カテゴリ情報を全て取得する.
 	 * 
 	 * @return 孫カテゴリ情報
 	 */
-	public List<Category> findGrandChild(){
+	public List<Category> findGrandChild() {
 		String sql = "SELECT id, parent, name FROM category WHERE name_all IS NOT NULL ORDER BY name";
 		return template.query(sql, CATEGORY_ROW_MAPPER);
 	}
-	
-	
-	
-	
 
 }
