@@ -46,19 +46,19 @@ public class ItemService {
 			String name, String brand, int pageNumber) {
 		List<Item> itemList = null;
 		if (name == null) {
-			name = " ";
+			name = "";
 		}
 		if (brand == null) {
-			brand = " ";
+			brand = "";
 		}
 		// カテゴリーの検索値の有無によって条件分岐
-		if (grandChildId != null) {
+		if (grandChildId != 0) {
 			System.out.println("孫カテゴリで検索");
 			itemList = itemRepository.findByGrandChildAndSearchValue(grandChildId, name, brand, pageNumber);
-		} else if (childId != null) {
+		} else if (childId != 0) {
 			System.out.println("子カテゴリで検索");
 			itemList = itemRepository.findByChildAndSearchValue(childId, name, brand, pageNumber);
-		} else if (parentId != null) {
+		} else if (parentId != 0) {
 			System.out.println("親カテゴリで検索");
 			itemList = itemRepository.findByParentAndSearchValue(parentId, name, brand, pageNumber);
 		} else {

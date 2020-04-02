@@ -114,7 +114,7 @@ public class ItemRepository {
 		sql.append("FROM category c1 INNER JOIN category c2 ON c1.id = c2.parent INNER JOIN category "
 				+ "c3 ON c2.id = c3.parent RIGHT OUTER JOIN items i ON c3.id = i.category WHERE ");
 		sql.append("i.name LIKE :name ");
-		sql.append("AND CASE WHEN :brand = '% %' THEN (i.brand LIKE :brand OR i.brand IS NULL) ELSE i.brand LIKE :brand END ");
+		sql.append("AND CASE WHEN :brand = '%%' THEN (i.brand LIKE :brand OR i.brand IS NULL) ELSE i.brand LIKE :brand END ");
 		sql.append("ORDER BY c1.id LIMIT :limitNumber OFFSET :offsetNumber");
 		SqlParameterSource param = new MapSqlParameterSource()
 				.addValue("name", "%" + name + "%").addValue("brand", "%" + brand + "%")
@@ -143,7 +143,7 @@ public class ItemRepository {
 				+ "c3 ON c2.id = c3.parent RIGHT OUTER JOIN items i ON c3.id = i.category WHERE ");
 		sql.append("c1.id = :parentId ");
 		sql.append("AND i.name LIKE :name ");
-		sql.append("AND CASE WHEN :brand = '% %' THEN (i.brand LIKE :brand OR i.brand IS NULL) ELSE i.brand LIKE :brand END ");
+		sql.append("AND CASE WHEN :brand = '%%' THEN (i.brand LIKE :brand OR i.brand IS NULL) ELSE i.brand LIKE :brand END ");
 		sql.append("ORDER BY c1.id LIMIT :limitNumber OFFSET :offsetNumber");
 		SqlParameterSource param = new MapSqlParameterSource().addValue("parentId", parentId)
 				.addValue("name", "%" + name + "%").addValue("brand", "%" + brand + "%")
