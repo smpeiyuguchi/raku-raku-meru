@@ -23,22 +23,24 @@ import com.example.service.CategoryService;
 public class SearchFormApiController {
 
 	@Autowired
-	private CategoryService CategoryService;
+	private CategoryService categoryService;
 
 	/**
-	 * 親カテゴリに応じて子カテゴリを絞り込む.
+	 * 親カテゴリに応じて子カテゴリ・孫カテゴリを絞り込む.
 	 * 
 	 * @param parentId 親カテゴリID
 	 * @return 子カテゴリ一覧
 	 */
-	@RequestMapping(value = "/refine_child_category", method = RequestMethod.POST)
-	public Map<String, List<Category>> refineChildCategory(String parentId) {
-		Map<String, List<Category>> childCategoryMap = new HashMap<>();
-		List<Category> childCategoryList = CategoryService.searchChildByParentId(Integer.parseInt(parentId));
-		childCategoryMap.put("childCategoryList", childCategoryList);
-		return childCategoryMap;
+	@RequestMapping(value = "/refine_category", method = RequestMethod.POST)
+	public Map<String, List<Category>> refineChildAndGrandChildCategory(String parentId) {
+		Map<String, List<Category>> categoryMap = new HashMap<>();
+		List<Category> childCategoryList = categoryService.searchChildByParentId(Integer.parseInt(parentId));
+		List<Category> grandChildCategoryList = categoryService.searchGrandChildByParentId(Integer.parseInt(parentId));
+		categoryMap.put("childCategoryList", childCategoryList);
+		categoryMap.put("grandChildCategoryList", grandChildCategoryList);
+		return categoryMap;
 	}
-	
+
 	/**
 	 * 子カテゴリに応じて孫カテゴリを絞り込む.
 	 * 
@@ -48,7 +50,7 @@ public class SearchFormApiController {
 	@RequestMapping(value = "/refine_grand_child_category", method = RequestMethod.POST)
 	public Map<String, List<Category>> refineGrandChildCategory(String childId) {
 		Map<String, List<Category>> grandChildCategoryMap = new HashMap<>();
-		List<Category> grandChildCategoryList = CategoryService.searchGrandChildByChildId(Integer.parseInt(childId));
+		List<Category> grandChildCategoryList = categoryService.searchGrandChildByChildId(Integer.parseInt(childId));
 		grandChildCategoryMap.put("grandChildCategoryList", grandChildCategoryList);
 		return grandChildCategoryMap;
 	}
