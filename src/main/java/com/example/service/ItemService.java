@@ -52,13 +52,13 @@ public class ItemService {
 			brand = "";
 		}
 		// カテゴリーの検索値の有無によって条件分岐
-		if (grandChildId != 0) {
+		if (grandChildId != null && grandChildId != 0) {
 			System.out.println("孫カテゴリで検索");
 			itemList = itemRepository.findByGrandChildAndSearchValue(grandChildId, name, brand, pageNumber);
-		} else if (childId != 0) {
+		} else if (childId != null && childId != 0) {
 			System.out.println("子カテゴリで検索");
 			itemList = itemRepository.findByChildAndSearchValue(childId, name, brand, pageNumber);
-		} else if (parentId != 0) {
+		} else if (parentId != null && parentId != 0) {
 			System.out.println("親カテゴリで検索");
 			itemList = itemRepository.findByParentAndSearchValue(parentId, name, brand, pageNumber);
 		} else {
