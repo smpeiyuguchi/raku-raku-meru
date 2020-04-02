@@ -38,6 +38,7 @@ public class ShowItemListController {
 	@RequestMapping("/")
 	public String showItemList(Model model, Integer parentId, Integer childId, Integer grandChildId,
 			String name, String brand, Integer pageNumber) {
+		setSearchForm(model);
 		if (pageNumber == null) {
 			pageNumber = 1;
 		}
@@ -45,18 +46,24 @@ public class ShowItemListController {
 		List<Item> itemList = itemService.searchItemListByMultipleCondition(parentId, childId,
 				grandChildId, name, brand, pageNumber);
 		int totalPageNumber = itemService.countTotalPageNumber();
-		
-		//検索フォーム用カテゴリー情報を取得
+				
+		model.addAttribute("itemList", itemList);
+		model.addAttribute("totalPageNumber", totalPageNumber);
+		model.addAttribute("pageNumber", pageNumber);
+		return "list";
+	}
+	
+	/**
+	 * 検索用のフォームをセットする.
+	 * 
+	 * @param model リクエストスコープ
+	 */
+	public void setSearchForm(Model model) {
 		List<Category> parentCategoryList = categoryService.searchParent();
 		List<Category> childCategoryList = categoryService.searchChild();
 		List<Category> grandChildCategoryList = categoryService.searchGrandChild();
 		model.addAttribute("parentCategoryList", parentCategoryList);
 		model.addAttribute("childCategoryList", childCategoryList);
 		model.addAttribute("grandChildCategoryList", grandChildCategoryList);
-
-		model.addAttribute("itemList", itemList);
-		model.addAttribute("totalPageNumber", totalPageNumber);
-		model.addAttribute("pageNumber", pageNumber);
-		return "list";
-	}
+	};
 }
