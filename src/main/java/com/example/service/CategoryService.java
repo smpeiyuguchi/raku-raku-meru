@@ -63,4 +63,20 @@ public class CategoryService {
 		return categoryRepository.findGrandChild();
 	}
 
+	/**
+	 * 子カテゴリIDから孫カテゴリ情報を取得する.
+	 * 
+	 * @param childId 子カテゴリID
+	 * @return 孫カテゴリ情報
+	 */
+	public List<Category> searchGrandChildByChildId(Integer childId) {
+		List<Category> categoryList = null;
+		if (childId == 0) {
+			categoryList = categoryRepository.findGrandChild();
+		} else {
+			categoryList = categoryRepository.findGrandChildByChildId(childId);
+		}
+		return categoryList;
+	}
+
 }

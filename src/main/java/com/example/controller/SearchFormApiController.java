@@ -38,5 +38,19 @@ public class SearchFormApiController {
 		childCategoryMap.put("childCategoryList", childCategoryList);
 		return childCategoryMap;
 	}
+	
+	/**
+	 * 子カテゴリに応じて孫カテゴリを絞り込む.
+	 * 
+	 * @param childId 子カテゴリID
+	 * @return 孫カテゴリ一覧
+	 */
+	@RequestMapping(value = "/refine_grand_child_category", method = RequestMethod.POST)
+	public Map<String, List<Category>> refineGrandChildCategory(String childId) {
+		Map<String, List<Category>> grandChildCategoryMap = new HashMap<>();
+		List<Category> grandChildCategoryList = CategoryService.searchGrandChildByChildId(Integer.parseInt(childId));
+		grandChildCategoryMap.put("grandChildCategoryList", grandChildCategoryList);
+		return grandChildCategoryMap;
+	}
 
 }

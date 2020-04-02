@@ -98,5 +98,18 @@ public class CategoryRepository {
 		String sql = "SELECT id, parent, name FROM category WHERE name_all IS NOT NULL ORDER BY name";
 		return template.query(sql, CATEGORY_ROW_MAPPER);
 	}
+	
+	/**
+	 * 子カテゴリIDから孫カテゴリ情報を全て取得する.
+	 * 
+	 * @param childId 子カテゴリID
+	 * @return 孫カテゴリ情報
+	 */
+	public List<Category> findGrandChildByChildId(Integer childId) {
+		String sql = "SELECT id, parent, name FROM category WHERE parent = :childId ORDER BY name";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("childId", childId);
+		System.out.println(template.query(sql, param, CATEGORY_ROW_MAPPER));
+		return template.query(sql, param, CATEGORY_ROW_MAPPER);
+	}
 
 }

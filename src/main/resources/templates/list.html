@@ -62,7 +62,7 @@
             <option th:value="0">- childCategory -</option>
             <option th:each="childCategory:${childCategoryList}" th:value="${childCategory.id}" th:text="${childCategory.name}">childCategory1</option>
           </select>
-          <select class="form-control" name="grandchildid" id="grandchild">
+          <select class="form-control" name="grandchildid" id="grandChild">
             <option th:value="0">- grandChild -</option>
             <option th:each="childCategory:${childCategoryList}" th:value="${childCategory.id}" th:text="${childCategory.name}">grandChild1</option>
           </select>
