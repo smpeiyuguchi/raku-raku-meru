@@ -85,7 +85,6 @@ public class CategoryRepository {
 	public List<Category> findChildByParentId(Integer parentId) {
 		String sql = "SELECT id, parent, name FROM category WHERE parent = :parentId AND name_all IS NULL ORDER BY name";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("parentId", parentId);
-		System.out.println(template.query(sql, param, CATEGORY_ROW_MAPPER));
 		return template.query(sql, param, CATEGORY_ROW_MAPPER);
 	}
 
