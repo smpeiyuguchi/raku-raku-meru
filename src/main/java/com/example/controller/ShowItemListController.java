@@ -41,12 +41,6 @@ public class ShowItemListController {
 		if (pageNumber == null) {
 			pageNumber = 1;
 		}
-		// 仮パラメータ
-		parentId = 2;
-//		childId = 11;
-//		grandchildid = 150;
-		name = "PINK";
-		brand = "B";
 
 		List<Item> itemList = itemService.searchItemListByMultipleCondition(parentId, childId,
 				grandchildid, name, brand, pageNumber);
