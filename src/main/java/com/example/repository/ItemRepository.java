@@ -218,4 +218,18 @@ public class ItemRepository {
 		template.update(sql, param);
 	}
 
+	/**
+	 * 商品情報を更新する.
+	 * 
+	 * @param item 商品情報
+	 */
+	public void update(Item item) {
+		String sql = "UPDATE items SET id = :id, name = :name, condition = :condition, category = :category, "
+				+ "brand = :brand, price = :price, shipping = :shipping, description = :description "
+				+ "WHERE id = :id";
+		SqlParameterSource param = new BeanPropertySqlParameterSource(item);
+		System.out.println(param);
+		template.update(sql, param);
+	}
+
 }

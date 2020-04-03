@@ -92,5 +92,14 @@ public class ItemService {
 	public void addItem(Item item) {
 		itemRepository.insert(item);
 	}
+	
+	/**
+	 * 商品情報を更新する.
+	 * 
+	 * @param item 商品情報
+	 */
+	public void updateItem(Item item) {
+		itemRepository.update(item);
+	}
 
 }

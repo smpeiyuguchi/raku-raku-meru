@@ -74,6 +74,7 @@
               <option th:value="${item.grandChild.id}" th:text="${item.grandChild.name}">- parentCategory -</option>
               <option th:value="0">-- select child category --</option>
             </select>
+            <span class="text-danger" th:errors="*{category}">error:may not be empty</span>
           </div>
         </div>
         <!-- brand -->
