@@ -66,8 +66,6 @@ public class ItemService {
 	public Item searchByItemId(Integer itemId) {
 		return itemRepository.findByitemId(itemId);
 	}
-	
-	
 
 	/**
 	 * 総ページ数を計算する.
@@ -84,6 +82,15 @@ public class ItemService {
 			totalPageNumber = totalItemNumber / itemNumberPerPage + 1;
 		}
 		return totalPageNumber;
+	}
+	
+	/**
+	 * 商品情報を登録する.
+	 * 
+	 * @param item 商品情報
+	 */
+	public void addItem(Item item) {
+		itemRepository.insert(item);
 	}
 
 }

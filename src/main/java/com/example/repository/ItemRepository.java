@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -25,7 +26,7 @@ public class ItemRepository {
 	/** １ページあたりの商品件数 */
 	private final static int ITEM_NUMBER_PER_PAGE = 30;
 
-    //Itemに親カテゴリ・中カテゴリ・子カテゴリをセットした状態で取得するように修正	
+	// Itemに親カテゴリ・中カテゴリ・子カテゴリをセットした状態で取得するように修正
 	private final static RowMapper<Item> ITEM_CATEGORY_ROW_MAPPER = (rs, i) -> {
 		Item item = new Item();
 		item.setId(rs.getInt("商品ID"));
@@ -56,7 +57,7 @@ public class ItemRepository {
 
 	@Autowired
 	private NamedParameterJdbcTemplate template;
-	
+
 	/**
 	 * IDから商品情報を検索する.
 	 * 
@@ -74,7 +75,6 @@ public class ItemRepository {
 		SqlParameterSource param = new MapSqlParameterSource().addValue("itemId", itemId);
 		return template.queryForObject(sql.toString(), param, ITEM_CATEGORY_ROW_MAPPER);
 	}
-	
 
 	/**
 	 * 商品の合計数をカウントする.
@@ -90,10 +90,10 @@ public class ItemRepository {
 	/**
 	 * 名前とブランドから商品情報を取得する.
 	 * 
-	 * @param name 名前
-	 * @param brand　ブランド
+	 * @param name       名前
+	 * @param brand      ブランド
 	 * @param pageNumber ページ番号
-	 * @return　商品情報一覧
+	 * @return 商品情報一覧
 	 */
 	public List<Item> findByNameAndBrand(String name, String brand, Integer pageNumber) {
 		// 取得する行までに除外する行数を指定
@@ -105,11 +105,12 @@ public class ItemRepository {
 		sql.append("FROM category c1 INNER JOIN category c2 ON c1.id = c2.parent INNER JOIN category "
 				+ "c3 ON c2.id = c3.parent RIGHT OUTER JOIN items i ON c3.id = i.category WHERE ");
 		sql.append("i.name LIKE :name ");
-		sql.append("AND CASE WHEN :brand = '%%' THEN (i.brand LIKE :brand OR i.brand IS NULL) ELSE i.brand LIKE :brand END ");
+		sql.append(
+				"AND CASE WHEN :brand = '%%' THEN (i.brand LIKE :brand OR i.brand IS NULL) ELSE i.brand LIKE :brand END ");
 		sql.append("ORDER BY c1.id LIMIT :limitNumber OFFSET :offsetNumber");
-		SqlParameterSource param = new MapSqlParameterSource()
-				.addValue("name", "%" + name + "%").addValue("brand", "%" + brand + "%")
-				.addValue("limitNumber", ITEM_NUMBER_PER_PAGE).addValue("offsetNumber", offsetNumber);
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%")
+				.addValue("brand", "%" + brand + "%").addValue("limitNumber", ITEM_NUMBER_PER_PAGE)
+				.addValue("offsetNumber", offsetNumber);
 		List<Item> itemList = template.query(sql.toString(), param, ITEM_CATEGORY_ROW_MAPPER);
 		return itemList;
 	}
@@ -134,7 +135,8 @@ public class ItemRepository {
 				+ "c3 ON c2.id = c3.parent RIGHT OUTER JOIN items i ON c3.id = i.category WHERE ");
 		sql.append("c1.id = :parentId ");
 		sql.append("AND i.name LIKE :name ");
-		sql.append("AND CASE WHEN :brand = '%%' THEN (i.brand LIKE :brand OR i.brand IS NULL) ELSE i.brand LIKE :brand END ");
+		sql.append(
+				"AND CASE WHEN :brand = '%%' THEN (i.brand LIKE :brand OR i.brand IS NULL) ELSE i.brand LIKE :brand END ");
 		sql.append("ORDER BY c1.id LIMIT :limitNumber OFFSET :offsetNumber");
 		SqlParameterSource param = new MapSqlParameterSource().addValue("parentId", parentId)
 				.addValue("name", "%" + name + "%").addValue("brand", "%" + brand + "%")
@@ -163,7 +165,8 @@ public class ItemRepository {
 				+ "c3 ON c2.id = c3.parent RIGHT OUTER JOIN items i ON c3.id = i.category WHERE ");
 		sql.append("c2.id = :childId ");
 		sql.append("AND i.name LIKE :name ");
-		sql.append("AND CASE WHEN :brand = '% %' THEN (i.brand LIKE :brand OR i.brand IS NULL) ELSE i.brand LIKE :brand END ");
+		sql.append(
+				"AND CASE WHEN :brand = '% %' THEN (i.brand LIKE :brand OR i.brand IS NULL) ELSE i.brand LIKE :brand END ");
 		sql.append("ORDER BY c1.id LIMIT :limitNumber OFFSET :offsetNumber");
 		SqlParameterSource param = new MapSqlParameterSource().addValue("childId", childId)
 				.addValue("name", "%" + name + "%").addValue("brand", "%" + brand + "%")
@@ -193,13 +196,26 @@ public class ItemRepository {
 				+ "c3 ON c2.id = c3.parent RIGHT OUTER JOIN items i ON c3.id = i.category WHERE ");
 		sql.append("c3.id = :grandChildId ");
 		sql.append("AND i.name LIKE :name ");
-		sql.append("AND CASE WHEN :brand = '% %' THEN (i.brand LIKE :brand OR i.brand IS NULL) ELSE i.brand LIKE :brand END ");
+		sql.append(
+				"AND CASE WHEN :brand = '% %' THEN (i.brand LIKE :brand OR i.brand IS NULL) ELSE i.brand LIKE :brand END ");
 		sql.append("ORDER BY c1.id LIMIT :limitNumber OFFSET :offsetNumber");
 		SqlParameterSource param = new MapSqlParameterSource().addValue("grandChildId", grandChildId)
 				.addValue("name", "%" + name + "%").addValue("brand", "%" + brand + "%")
 				.addValue("limitNumber", ITEM_NUMBER_PER_PAGE).addValue("offsetNumber", offsetNumber);
 		List<Item> itemList = template.query(sql.toString(), param, ITEM_CATEGORY_ROW_MAPPER);
 		return itemList;
+	}
+
+	/**
+	 * 商品情報を追加する.
+	 * 
+	 * @param item 商品情報
+	 */
+	public void insert(Item item) {
+		String sql = "INSERT INTO items (name, condition, category, brand, price, shipping, description) "
+				+ "VALUES (:name, :condition, :category, :brand, :price, :shipping, :description) ";
+		SqlParameterSource param = new BeanPropertySqlParameterSource(item);
+		template.update(sql, param);
 	}
 
 }
