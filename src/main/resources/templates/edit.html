@@ -23,62 +23,56 @@
 
   <!-- details -->
   <div id="input-main" class="container">
-    <a type="button" class="btn btn-default" href="./detail.html"><i class="fa fa-reply"></i> back</a>
+    <a type="button" class="btn btn-default" href="./detail.html" th:href="@{'/show-item-detail?itemId='${item.id}}">
+    <i class="fa fa-reply"></i> back</a>
     <h2>Edit</h2>
 
     <!-- edit form -->
-    <form action="#" method="POST" class="form-horizontal">
+    <form action="#" th:action="@{/update-item}" method="POST" class="form-horizontal" th:object="${updateItemForm}">
+    	<input type="hidden" name="id" th:value="${item.id}">
+    	<input type="hidden" name="itemId" th:value="${item.id}">
         <!-- name -->
         <div class="form-group">
           <label for="inputName" class="col-sm-2 control-label">name</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="inputName"/>
+            <input type="text" class="form-control" id="inputName" name="name" th:field="*{name}">
+            <span class="text-danger"th:errors="*{name}">error:may not be empty</span>
           </div>
         </div>
         <!-- price -->
         <div class="form-group">
           <label for="price" class="col-sm-2 control-label">price</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="price"/>
+            <input type="text" class="form-control" id="price" name="price" th:field="*{price}">
+            <span class="text-danger" th:errors="*{price}">error:may not be empty</span>
           </div>
         </div>
         <!-- category -->
         <div class="form-group">
           <label for="category" class="col-sm-2 control-label">category</label>
           <div class="col-sm-8">
-            <select class="form-control">
-              <option>- parentCategory -</option>
-              <option>parentCategory1</option>
-              <option>parentCategory2</option>
-              <option>parentCategory3</option>
-              <option>parentCategory4</option>
-              <option>parentCategory5</option>
+            <select class="form-control" id="parent">
+              <option th:value="${item.parent.id}" th:text="${item.parent.name}">- parentCategory -</option>
+              <option th:value="0">-------------</option>
+              <option th:each="parentCategory:${parentCategoryList}" th:value="${parentCategory.id}" th:text="${parentCategory.name}">parentCategory1</option>
             </select>
           </div>
         </div>
         <div class="form-group">
           <label for="category" class="col-sm-2 control-label"></label>
           <div class="col-sm-8">
-            <select class="form-control">
-              <option>- childCategory -</option>
-              <option>childCategory1</option>
-              <option>childCategory2</option>
-              <option>childCategory3</option>
-              <option>childCategory4</option>
-              <option>childCategory5</option>
+            <select class="form-control" id="child">
+              <option th:value="${item.child.id}" th:text="${item.child.name}">- parentCategory -</option>
+              <option th:value="0">-- select parent category --</option>
             </select>
           </div>
         </div>
         <div class="form-group">
           <label for="category" class="col-sm-2 control-label"></label>
           <div class="col-sm-8">
-            <select class="form-control">
-              <option>- grandChild -</option>
-              <option>grandChild1</option>
-              <option>grandChild2</option>
-              <option>grandChild3</option>
-              <option>grandChild4</option>
-              <option>grandChild5</option>
+            <select class="form-control" id="grandChild" name="category" th:field="*{category}">
+              <option th:value="${item.grandChild.id}" th:text="${item.grandChild.name}">- parentCategory -</option>
+              <option th:value="0">-- select child category --</option>
             </select>
           </div>
         </div>
@@ -86,7 +80,7 @@
         <div class="form-group">
           <label for="brand" class="col-sm-2 control-label">brand</label>
           <div class="col-sm-8">
-            <input type="text" id="brand" class="form-control" name="brand"/>
+            <input type="text" id="brand" class="form-control" name="brand" th:field="*{brand}">
           </div>
         </div>
         <!-- condition -->
@@ -94,13 +88,13 @@
           <label for="condition" class="col-sm-2 control-label">condition</label>
           <div class="col-sm-8">
             <label for="condition1" class="radio-inline">
-              <input type="radio" name="condition" id="condition1" value="1"/> 1
+              <input type="radio" name="condition" id="condition1" value="1" th:field="*{condition}"> 1
             </label>
             <label for="condition2" class="radio-inline">
-              <input type="radio" name="condition" id="condition2" value="2"/> 2
+              <input type="radio" name="condition" id="condition2" value="2" th:field="*{condition}"> 2
             </label>
             <label for="condition3" class="radio-inline">
-              <input type="radio" name="condition" id="condition3" value="3"/> 3
+              <input type="radio" name="condition" id="condition3" value="3" th:field="*{condition}"> 3
             </label>
           </div>
         </div>
@@ -108,7 +102,8 @@
         <div class="form-group">
           <label for="description" class="col-sm-2 control-label">description</label>
           <div class="col-sm-8">
-            <textarea name="description" id="description" class="form-control" rows="5"></textarea>
+            <textarea name="description" id="description" class="form-control" rows="5" th:field="*{description}"></textarea>
+            <span class="text-danger" th:errors="*{description}">error:may not be empty</span>
           </div>
         </div>
         <!-- submit button -->
@@ -119,5 +114,6 @@
         </div>
       </form>
     </div>
+    <script th:src="@{/js/edit-item.js}"></script>
 </body>
 </html>
