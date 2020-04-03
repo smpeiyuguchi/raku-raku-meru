@@ -17,13 +17,13 @@ import com.example.repository.UserRepository;
  */
 @Service
 public class UserService {
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	/**
 	 * メールアドレスからユーザー情報を検索する.
 	 * 
@@ -32,13 +32,13 @@ public class UserService {
 	 */
 	public User findByEmail(String email) {
 		List<User> userList = userRepository.findAllByEmail(email);
-		if(userList.size() == 0) {
+		if (userList.size() == 0) {
 			return null;
-		}else {
+		} else {
 			return userList.get(0);
 		}
 	}
-	
+
 	/**
 	 * ユーザー情報を登録する.
 	 * 

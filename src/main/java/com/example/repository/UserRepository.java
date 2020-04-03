@@ -20,7 +20,7 @@ import com.example.domain.User;
  */
 @Repository
 public class UserRepository {
-	
+
 	private final static RowMapper<User> USER_ROW_MAPPER = (rs, i) -> {
 		User user = new User();
 		user.setId(rs.getInt("id"));
@@ -30,10 +30,10 @@ public class UserRepository {
 		user.setAuthority(rs.getInt("authority"));
 		return user;
 	};
-	
+
 	@Autowired
 	private NamedParameterJdbcTemplate template;
-	
+
 	/**
 	 * ユーザー情報を登録する.
 	 * 
@@ -44,7 +44,19 @@ public class UserRepository {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(user);
 		template.update(sql, param);
 	}
-	
+
+	/**
+	 * メールアドレスからユーザー情報を取得する.
+	 * 
+	 * @param email メールアドレス
+	 * @return ユーザー情報
+	 */
+	public User findByEmail(String email) {
+		String sql = "SELECT id, name, email, password, authority FROM users WHERE email = :email";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("email", email);
+		return template.queryForObject(sql, param, USER_ROW_MAPPER);
+	}
+
 	/**
 	 * メールアドレスからユーザー情報一覧を取得する.
 	 * 
