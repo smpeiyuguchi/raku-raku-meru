@@ -1,6 +1,5 @@
 package com.example.repository;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import com.example.domain.Category;
 import com.example.domain.Item;
 
 /**
@@ -25,6 +25,7 @@ public class ItemRepository {
 	/** １ページあたりの商品件数 */
 	private final static int ITEM_NUMBER_PER_PAGE = 30;
 
+    //Itemに親カテゴリ・中カテゴリ・子カテゴリをセットした状態で取得するように修正	
 	private final static RowMapper<Item> ITEM_CATEGORY_ROW_MAPPER = (rs, i) -> {
 		Item item = new Item();
 		item.setId(rs.getInt("商品ID"));
@@ -35,11 +36,18 @@ public class ItemRepository {
 		item.setPrice(rs.getDouble("価格"));
 		item.setShipping(rs.getInt("配送状況"));
 		item.setDescription(rs.getString("説明"));
-		String largeCategory = rs.getString("大カテゴリ名");
-		String middleCategory = rs.getString("中カテゴリ名");
-		String smallCategory = rs.getString("小カテゴリ名");
-		List<String> categoryNameList = Arrays.asList(largeCategory, middleCategory, smallCategory);
-		item.setCategoryNameList(categoryNameList);
+		Category parent = new Category();
+		parent.setId(rs.getInt("親カテゴリID"));
+		parent.setName(rs.getString("親カテゴリ名"));
+		Category child = new Category();
+		child.setId(rs.getInt("子カテゴリID"));
+		child.setName(rs.getString("子カテゴリ名"));
+		Category grandChild = new Category();
+		grandChild.setId(rs.getInt("孫カテゴリID"));
+		grandChild.setName(rs.getString("孫カテゴリ名"));
+		item.setParent(parent);
+		item.setChild(child);
+		item.setGrandChild(grandChild);
 		return item;
 	};
 
@@ -87,8 +95,8 @@ public class ItemRepository {
 		// 取得する行までに除外する行数を指定
 		int offsetNumber = (pageNumber - 1) * ITEM_NUMBER_PER_PAGE;
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT c1.id 大カテゴリID, c1.name 大カテゴリ名, C2.id AS 中カテゴリID, c2.name AS 中カテゴリ名, "
-				+ "c3.id 小カテゴリID, c3.name 小カテゴリ名, i.id AS 商品ID, i.name AS 商品名, i.condition AS 状況, "
+		sql.append("SELECT c1.id 親カテゴリID, c1.name 親カテゴリ名, C2.id AS 子カテゴリID, c2.name AS 子カテゴリ名, "
+				+ "c3.id 孫カテゴリID, c3.name 孫カテゴリ名, i.id AS 商品ID, i.name AS 商品名, i.condition AS 状況, "
 				+ "i.category AS 商品カテゴリー, i.brand AS ブランド, i.price AS 価格, i.shipping AS 配送状況, i.description AS 説明 ");
 		sql.append("FROM category c1 INNER JOIN category c2 ON c1.id = c2.parent INNER JOIN category "
 				+ "c3 ON c2.id = c3.parent RIGHT OUTER JOIN items i ON c3.id = i.category WHERE ");
@@ -115,8 +123,8 @@ public class ItemRepository {
 		// 取得する行までに除外する行数を指定
 		int offsetNumber = (pageNumber - 1) * ITEM_NUMBER_PER_PAGE;
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT c1.id 大カテゴリID, c1.name 大カテゴリ名, C2.id AS 中カテゴリID, c2.name AS 中カテゴリ名, "
-				+ "c3.id 小カテゴリID, c3.name 小カテゴリ名, i.id AS 商品ID, i.name AS 商品名, i.condition AS 状況, "
+		sql.append("SELECT c1.id 親カテゴリID, c1.name 親カテゴリ名, C2.id AS 子カテゴリID, c2.name AS 子カテゴリ名, "
+				+ "c3.id 孫カテゴリID, c3.name 孫カテゴリ名, i.id AS 商品ID, i.name AS 商品名, i.condition AS 状況, "
 				+ "i.category AS 商品カテゴリー, i.brand AS ブランド, i.price AS 価格, i.shipping AS 配送状況, i.description AS 説明 ");
 		sql.append("FROM category c1 INNER JOIN category c2 ON c1.id = c2.parent INNER JOIN category "
 				+ "c3 ON c2.id = c3.parent RIGHT OUTER JOIN items i ON c3.id = i.category WHERE ");
@@ -144,8 +152,8 @@ public class ItemRepository {
 		// 取得する行までに除外する行数を指定
 		int offsetNumber = (pageNumber - 1) * ITEM_NUMBER_PER_PAGE;
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT c1.id 大カテゴリID, c1.name 大カテゴリ名, C2.id AS 中カテゴリID, c2.name AS 中カテゴリ名, "
-				+ "c3.id 小カテゴリID, c3.name 小カテゴリ名, i.id AS 商品ID, i.name AS 商品名, i.condition AS 状況, "
+		sql.append("SELECT c1.id 親カテゴリID, c1.name 親カテゴリ名, C2.id AS 子カテゴリID, c2.name AS 子カテゴリ名, "
+				+ "c3.id 孫カテゴリID, c3.name 孫カテゴリ名, i.id AS 商品ID, i.name AS 商品名, i.condition AS 状況, "
 				+ "i.category AS 商品カテゴリー, i.brand AS ブランド, i.price AS 価格, i.shipping AS 配送状況, i.description AS 説明 ");
 		sql.append("FROM category c1 INNER JOIN category c2 ON c1.id = c2.parent INNER JOIN category "
 				+ "c3 ON c2.id = c3.parent RIGHT OUTER JOIN items i ON c3.id = i.category WHERE ");
@@ -174,8 +182,8 @@ public class ItemRepository {
 		// 取得する行までに除外する行数を指定
 		int offsetNumber = (pageNumber - 1) * ITEM_NUMBER_PER_PAGE;
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT c1.id 大カテゴリID, c1.name 大カテゴリ名, C2.id AS 中カテゴリID, c2.name AS 中カテゴリ名, "
-				+ "c3.id 小カテゴリID, c3.name 小カテゴリ名, i.id AS 商品ID, i.name AS 商品名, i.condition AS 状況, "
+		sql.append("SELECT c1.id 親カテゴリID, c1.name 親カテゴリ名, C2.id AS 子カテゴリID, c2.name AS 子カテゴリ名, "
+				+ "c3.id 孫カテゴリID, c3.name 孫カテゴリ名, i.id AS 商品ID, i.name AS 商品名, i.condition AS 状況, "
 				+ "i.category AS 商品カテゴリー, i.brand AS ブランド, i.price AS 価格, i.shipping AS 配送状況, i.description AS 説明 ");
 		sql.append("FROM category c1 INNER JOIN category c2 ON c1.id = c2.parent INNER JOIN category "
 				+ "c3 ON c2.id = c3.parent RIGHT OUTER JOIN items i ON c3.id = i.category WHERE ");

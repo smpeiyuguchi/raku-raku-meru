@@ -1,7 +1,5 @@
 package com.example.domain;
 
-import java.util.List;
-
 /**
  * itemsテーブルの情報を格納するエンティティ.
  * 
@@ -26,14 +24,18 @@ public class Item {
 	private Integer shipping;
 	/** 説明 */
 	private String description;
-	/** カテゴリー名のリスト */
-	private List<String> categoryNameList;
+	/** 親カテゴリー */
+	private Category parent;
+	/** 子カテゴリー */
+	private Category child;
+	/** 孫カテゴリー */
+	private Category grandChild;
 
 	public Item() {
 	}
 
 	public Item(Integer id, String name, Integer condition, Integer category, String brand, double price,
-			Integer shipping, String description, List<String> categoryNameList) {
+			Integer shipping, String description, Category parent, Category child, Category grandChild) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -43,7 +45,9 @@ public class Item {
 		this.price = price;
 		this.shipping = shipping;
 		this.description = description;
-		this.categoryNameList = categoryNameList;
+		this.parent = parent;
+		this.child = child;
+		this.grandChild = grandChild;
 	}
 
 	public Integer getId() {
@@ -110,19 +114,35 @@ public class Item {
 		this.description = description;
 	}
 
-	public List<String> getCategoryNameList() {
-		return categoryNameList;
+	public Category getParent() {
+		return parent;
 	}
 
-	public void setCategoryNameList(List<String> categoryNameList) {
-		this.categoryNameList = categoryNameList;
+	public void setParent(Category parent) {
+		this.parent = parent;
+	}
+
+	public Category getChild() {
+		return child;
+	}
+
+	public void setChild(Category child) {
+		this.child = child;
+	}
+
+	public Category getGrandChild() {
+		return grandChild;
+	}
+
+	public void setGrandChild(Category grandChild) {
+		this.grandChild = grandChild;
 	}
 
 	@Override
 	public String toString() {
 		return "Item [id=" + id + ", name=" + name + ", condition=" + condition + ", category=" + category + ", brand="
-				+ brand + ", price=" + price + ", shipping=" + shipping + ", description=" + description
-				+ ", categoryNameList=" + categoryNameList + "]";
+				+ brand + ", price=" + price + ", shipping=" + shipping + ", description=" + description + ", parent="
+				+ parent + ", child=" + child + ", grandChild=" + grandChild + "]";
 	}
 
 }
