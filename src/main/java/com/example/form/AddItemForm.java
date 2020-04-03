@@ -17,7 +17,7 @@ public class AddItemForm {
 
 	/** 価格 */
 	@NotBlank(message = "error:may not be empty")
-	@Pattern(regexp = "[+-]?\\d+", message = "error:may not be other than numbers")
+	@Pattern(regexp = "\\d+(\\.\\d+)?", message = "error:may not be other than numbers")
 	private String price;
 
 	private String brand;
