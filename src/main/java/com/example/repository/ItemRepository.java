@@ -63,12 +63,16 @@ public class ItemRepository {
 	 * @param id ID
 	 * @return 商品情報
 	 */
-	public Item load(Integer id) {
-		String sql = "SELECT i.id i_id, i.name i_name, i.condition i_condition, i.category i_category, i.brand i_brand, "
-				+ "i.price i_price, i.shipping i_shipping, c.name_all c_name_all FROM items i "
-				+ "LEFT OUTER JOIN category c ON i.category = c.id WHERE i.id = :id";
-		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
-		return template.queryForObject(sql, param, ITEM_CATEGORY_ROW_MAPPER);
+	public Item findByitemId(Integer itemId) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT c1.id 親カテゴリID, c1.name 親カテゴリ名, C2.id AS 子カテゴリID, c2.name AS 子カテゴリ名, "
+				+ "c3.id 孫カテゴリID, c3.name 孫カテゴリ名, i.id AS 商品ID, i.name AS 商品名, i.condition AS 状況, "
+				+ "i.category AS 商品カテゴリー, i.brand AS ブランド, i.price AS 価格, i.shipping AS 配送状況, i.description AS 説明 ");
+		sql.append("FROM category c1 INNER JOIN category c2 ON c1.id = c2.parent INNER JOIN category "
+				+ "c3 ON c2.id = c3.parent RIGHT OUTER JOIN items i ON c3.id = i.category WHERE ");
+		sql.append("i.id = :itemId");
+		SqlParameterSource param = new MapSqlParameterSource().addValue("itemId", itemId);
+		return template.queryForObject(sql.toString(), param, ITEM_CATEGORY_ROW_MAPPER);
 	}
 	
 

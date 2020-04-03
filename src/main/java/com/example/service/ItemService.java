@@ -56,6 +56,18 @@ public class ItemService {
 		}
 		return itemList;
 	}
+	
+	/**
+	 * 商品IDから商品情報を検索する.
+	 * 
+	 * @param itemId 商品ID
+	 * @return 商品情報
+	 */
+	public Item searchByItemId(Integer itemId) {
+		return itemRepository.findByitemId(itemId);
+	}
+	
+	
 
 	/**
 	 * 総ページ数を計算する.

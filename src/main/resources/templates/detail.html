@@ -30,31 +30,34 @@
         <tbody>
           <tr>
             <th>ID</th>
-            <td>1</td>
+            <td th:text="${item.id}">1</td>
           </tr>
           <tr>
             <th>name</th>
-            <td>Razer BlackWidow Chroma Keyboard</td>
+            <td th:text="${item.name}">Razer BlackWidow Chroma Keyboard</td>
           </tr>
           <tr>
             <th>price</th>
-            <td>$52.0</td>
+            <td>$<span th:text="${item.price}">52.0</span></td>
           </tr>
           <tr>
             <th>category</th>
-            <td>Electronics / Computers &amp; Tablets / Components &amp; Parts</td>
+            <td><a href="" th:text="${item.parent.name}">Electronics</a> 
+            	/ <a href="" th:text="${item.child.name}">Computers &amp; Tablets</a> 
+           		/ <a href="" th:text="${item.grandChild.name}">Components &amp; Parts</a>
+           	</td>
           </tr>
           <tr>
             <th>brand</th>
-            <td>Razer</td>
+            <td th:text="${item.brand}">Razer</td>
           </tr>
           <tr>
             <th>condition</th>
-            <td>3</td>
+            <td th:text="${item.condition}">3</td>
           </tr>
           <tr>
             <th>description</th>
-            <td>I realized his pants are on backwards after the picture. They were very dirty so I hand washed them. He has a stuffed body and painted porcelain head, hands and feet. Back before clowns were too scary. 9"" tall. No chips or cracks but minor paint loss in a few places. Clown Circus Doll Collectible</td>
+            <td th:text="${item.description}">I realized his pants are on backwards after the picture. They were very dirty so I hand washed them. He has a stuffed body and painted porcelain head, hands and feet. Back before clowns were too scary. 9"" tall. No chips or cracks but minor paint loss in a few places. Clown Circus Doll Collectible</td>
           </tr>
         </tbody>
       </table>

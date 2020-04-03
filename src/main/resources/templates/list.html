@@ -80,7 +80,7 @@
         </thead>
         <tbody>
           <tr th:each="item:${itemList}">
-            <td class="item-name"><a href="./detail.html"><span th:text="${item.name}">Razer BlackWidow Chroma Keyboard</span></a></td>
+            <td class="item-name"><a href="./detail.html" th:href="@{'/show-item-detail?itemId='+${item.id}}"><span th:text="${item.name}">Keyboard</span></a></td>
             <td class="item-price"><span th:text="${item.price}">52.0</span></td>
             <td class="item-category">
             	<a href="" th:text="${item.parent.name}">Electronics</a> 
