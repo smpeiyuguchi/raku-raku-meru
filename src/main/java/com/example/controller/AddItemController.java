@@ -67,7 +67,7 @@ public class AddItemController {
 		}
 		Item item = new Item();
 		item.setName(form.getName());
-		item.setPrice(Integer.parseInt(form.getPrice()));
+		item.setPrice((int)Double.parseDouble(form.getPrice()));
 		item.setBrand(form.getBrand());
 		item.setCategory(form.getCategory());
 		item.setCondition(form.getCondition());
