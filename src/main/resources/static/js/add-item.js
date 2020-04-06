@@ -7,7 +7,6 @@ $(function(){
 	$("#parent").on("change", function(){
 		var hostUrl = "http://localhost:8080/search_form_api/refine_category";
 		var parentIdParam = $("#parent").val();
-		var childSelect = $("#child").children();
 		$.ajax({
 			url : hostUrl,
 			type : 'POST',

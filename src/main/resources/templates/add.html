@@ -62,7 +62,6 @@
         <div class="col-sm-8">
           <select class="form-control" id="child">
             <option th:value="0">-- childCategory --</option>
-            <option th:value="0">-- select parent category --</option>
           </select>
         </div>
       </div>
@@ -71,7 +70,6 @@
         <div class="col-sm-8">
           <select class="form-control" name="category" id="grandChild" th:field="*{category}">
             <option th:value="0">-- grandChild --</option>
-            <option th:value="0">-- select child category --</option>
           </select>
           <span class="text-danger" th:errors="*{category}">error:may not be empty</span>
         </div>
@@ -114,6 +112,6 @@
       </div>
     </form>
   </div>
-  <script th:src="@{/js/add-item.js}"></script>
+  <script th:src="@{/js/search-form.js}"></script>
 </body>
 </html>

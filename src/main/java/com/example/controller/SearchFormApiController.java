@@ -26,16 +26,17 @@ public class SearchFormApiController {
 	private CategoryService categoryService;
 
 	/**
-	 * 親カテゴリに応じて子カテゴリ・孫カテゴリを絞り込む.
+	 * 親カテゴリIDに紐づく子カテゴリ一覧を取得する.
+	 * 子カテゴリIDに紐づく親カテゴリ一覧を取得する.
 	 * 
 	 * @param parentId 親カテゴリID
-	 * @return 子カテゴリ一覧
+	 * @return カテゴリ一覧
 	 */
 	@RequestMapping(value = "/refine_category", method = RequestMethod.POST)
 	public Map<String, List<Category>> refineChildAndGrandChildCategory(String parentId) {
 		Map<String, List<Category>> categoryMap = new HashMap<>();
 		List<Category> childCategoryList = categoryService.searchChildByParentId(Integer.parseInt(parentId));
-		List<Category> grandChildCategoryList = categoryService.searchGrandChildByParentId(Integer.parseInt(parentId));
+		List<Category> grandChildCategoryList = categoryService.searchGrandChildByChildId(childCategoryList.get(0).getId());
 		categoryMap.put("childCategoryList", childCategoryList);
 		categoryMap.put("grandChildCategoryList", grandChildCategoryList);
 		return categoryMap;

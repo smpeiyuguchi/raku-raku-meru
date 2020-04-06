@@ -43,11 +43,9 @@
           </select>
           <select class="form-control" name="childId" id="child">
             <option th:value="0">- childCategory -</option>
-            <option th:each="childCategory:${childCategoryList}" th:value="${childCategory.id}" th:text="${childCategory.name}">childCategory1</option>
           </select>
           <select class="form-control" name="grandChildId" id="grandChild">
-            <option th:value="0">- grandChild -</option>
-            <option th:each="grandChildCategory:${grandChildCategoryList}" th:value="${grandChildCategory.id}" th:text="${grandChildCategory.name}">grandChild1</option>
+            <option th:value="0">- grandChildCategory -</option>
           </select>
         </div>
         <div class="form-group"><i class="fa fa-plus"></i></div>
