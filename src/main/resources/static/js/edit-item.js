@@ -1,4 +1,9 @@
 $(function(){
+	var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) {
+      xhr.setRequestHeader(header, token);
+    });
 	$("#parent").on("change", function(){
 		var hostUrl = "http://localhost:8080/search_form_api/refine_category";
 		var parentIdParam = $("#parent").val();

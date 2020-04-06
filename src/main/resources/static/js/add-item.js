@@ -1,4 +1,9 @@
 $(function(){
+	var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) {
+      xhr.setRequestHeader(header, token);
+    });
 	$("#parent").on("change", function(){
 		var hostUrl = "http://localhost:8080/search_form_api/refine_category";
 		var parentIdParam = $("#parent").val();
@@ -14,7 +19,7 @@ $(function(){
 		}).done(function(data){
 			console.log(data);
 			console.dir(JSON.stringify(data));
-			$('#child > option:last-child').remove();
+			$('#child > option').remove();
 			var childOption = data.childCategoryList;
 			for(var i = 0; i < childOption.length; i++){
 				$('#child').append($('<option>').html(childOption[i].name).val(childOption[i].id));
@@ -42,7 +47,7 @@ $(function(){
 		}).done(function(data) {
 			console.log(data);
 			console.dir(JSON.stringify(data));
-			$('#grandChild > option:last-child').remove();
+			$('#grandChild > option').remove();
 			var grandChildOption = data.grandChildCategoryList;
 			for(var i = 0; i < grandChildOption.length; i++){
 				$('#grandChild').append($('<option>').html(grandChildOption[i].name).val(grandChildOption[i].id));
