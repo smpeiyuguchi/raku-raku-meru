@@ -36,9 +36,7 @@ public class SearchFormApiController {
 	public Map<String, List<Category>> refineChildAndGrandChildCategory(String parentId) {
 		Map<String, List<Category>> categoryMap = new HashMap<>();
 		List<Category> childCategoryList = categoryService.searchChildByParentId(Integer.parseInt(parentId));
-		List<Category> grandChildCategoryList = categoryService.searchGrandChildByChildId(childCategoryList.get(0).getId());
 		categoryMap.put("childCategoryList", childCategoryList);
-		categoryMap.put("grandChildCategoryList", grandChildCategoryList);
 		return categoryMap;
 	}
 
