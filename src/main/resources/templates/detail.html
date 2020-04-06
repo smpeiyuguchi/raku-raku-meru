@@ -63,6 +63,10 @@
       </table>
       <a type="button" class="btn btn-default" href="./edit.html" th:href="@{'/to-edit?itemId='+${item.id}}">
       	<i class="fa fa-pencil-square-o"></i>&nbsp;edit</a>
+      <span sec:authorize="hasRole('ROLE_ADMIN')">
+       <a type="button" class="btn btn-default" href="./list.html" th:href="@{'/admin/delete?id='+${item.id}}" onclick="return confirm('Are you sure?')">
+         <i class="fa fa-pencil-square-o"></i>&nbsp;delete</a>
+      </span>
     </div>
   </div>
 </body>

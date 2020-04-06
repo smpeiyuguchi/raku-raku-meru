@@ -231,5 +231,16 @@ public class ItemRepository {
 		System.out.println(param);
 		template.update(sql, param);
 	}
+	
+	/**
+	 * 商品を削除する.
+	 * 
+	 * @param id ID
+	 */
+	public void delete(Integer id) {
+		String sql = "DELETE FROM items WHERE id = :id";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+		template.update(sql, param);
+	}
 
 }

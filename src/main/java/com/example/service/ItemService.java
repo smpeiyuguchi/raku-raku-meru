@@ -101,5 +101,14 @@ public class ItemService {
 	public void updateItem(Item item) {
 		itemRepository.update(item);
 	}
+	
+	/**
+	 * 商品を削除する.
+	 * 
+	 * @param id ID
+	 */
+	public void deleteItem(Integer id) {
+		itemRepository.delete(id);
+	}
 
 }
