@@ -5,12 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.domain.Category;
 import com.example.domain.Item;
-import com.example.form.SearchValueForm;
 import com.example.service.CategoryService;
 import com.example.service.ItemService;
 
@@ -30,11 +28,6 @@ public class ShowItemListController {
 	@Autowired
 	private CategoryService categoryService;
 
-	@ModelAttribute
-	public SearchValueForm setUpSearchValueForm() {
-		return new SearchValueForm();
-	}
-
 	/**
 	 * 商品情報一覧を表示する.
 	 * 
@@ -43,12 +36,8 @@ public class ShowItemListController {
 	 * @return 商品一覧画面
 	 */
 	@RequestMapping("/")
-	public String showItemList(Model model, SearchValueForm form, Integer pageNumber) {
-		Integer parentId = form.getParentId();
-		Integer childId = form.getChildId();
-		Integer grandChildId = form.getGrandChildId();
-		String name = form.getName();
-		String brand = form.getBrand();
+	public String showItemList(Model model, Integer parentId, Integer childId, Integer grandChildId, String name,
+			String brand, Integer pageNumber) {
 		setSearchForm(model, parentId, childId, grandChildId, name, brand);
 		List<Item> itemList = null;
 
@@ -66,7 +55,7 @@ public class ShowItemListController {
 		if (grandChildId != null && grandChildId != 0) {
 			itemList = itemService.searchItemListByGrandChildIdAndSearchValue(grandChildId, name, brand, pageNumber);
 		} else if (childId != null && childId != 0) {
-			itemList = itemService.searchItemListByChildIdAndSearchValue(grandChildId, name, brand, pageNumber);
+			itemList = itemService.searchItemListByChildIdAndSearchValue(childId, name, brand, pageNumber);
 		} else if (parentId != null && parentId != 0) {
 			itemList = itemService.searchItemListByParentIdAndSearchValue(parentId, name, brand, pageNumber);
 		} else {
