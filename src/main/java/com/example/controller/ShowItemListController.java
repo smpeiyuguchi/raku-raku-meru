@@ -38,8 +38,6 @@ public class ShowItemListController {
 	@RequestMapping("/")
 	public String showItemList(Model model, Integer parentId, Integer childId, Integer grandChildId, String name,
 			String brand, Integer pageNumber) {
-		List<Item> itemList = null;
-
 		if (name == null) {
 			name = "";
 		}
@@ -63,19 +61,35 @@ public class ShowItemListController {
 			grandChildId = 0;
 		}
 
-		// 検索値濃霧によって検索方法を分岐
+		// 検索値の有無によって検索方法を分岐
+		List<Item> itemList = null;
+		// 1ページあたりの件数
+		int itemNumberPerPage = 30;
+		// 総取得件数
+		int totalItemNumber = 0;
+		// 総ページ数
+		int totalPageNumber = 0;
 		if (grandChildId != 0) {
 			itemList = itemService.searchItemListByGrandChildIdAndSearchValue(grandChildId, name, brand, pageNumber);
+			totalItemNumber = itemService.searchTotalNumberByGrandChildIdAndSearchValue(grandChildId, name, brand);
 		} else if (childId != 0) {
 			itemList = itemService.searchItemListByChildIdAndSearchValue(childId, name, brand, pageNumber);
+			totalItemNumber = itemService.searchTotalNumberByChildIdAndSearchValue(childId, name, brand);
 		} else if (parentId != 0) {
 			itemList = itemService.searchItemListByParentIdAndSearchValue(parentId, name, brand, pageNumber);
+			totalItemNumber = itemService.searchTotalNumberByParentIdAndSearchValue(parentId, name, brand);
 		} else {
 			itemList = itemService.searchItemListBySearchValue(name, brand, pageNumber);
+			totalItemNumber = itemService.SearchTotalNumberBySearchValue(name, brand);
 		}
-		model.addAttribute("itemList", itemList);
 
-		int totalPageNumber = itemService.countTotalPageNumber();
+		if (totalItemNumber % itemNumberPerPage == 0) {
+			totalPageNumber = totalItemNumber / itemNumberPerPage;
+		} else {
+			totalPageNumber = totalItemNumber / itemNumberPerPage + 1;
+		}
+		// 商品一覧・ページ番号・総ページ数をセット
+		model.addAttribute("itemList", itemList);
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("totalPageNumber", totalPageNumber);
 		// 検索フォームに検索値をセット

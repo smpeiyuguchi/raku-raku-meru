@@ -36,6 +36,18 @@ public class ItemService {
 	}
 
 	/**
+	 * 孫カテゴリで検索した時の合計件数を取得する.
+	 * 
+	 * @param grandChildId 孫カテゴリID
+	 * @param name         名前
+	 * @param brand        ブランド
+	 * @return 合計件数
+	 */
+	public Integer searchTotalNumberByGrandChildIdAndSearchValue(Integer grandChildId, String name, String brand) {
+		return itemRepository.countTotalNumberFindByGrandChildAndSearchValue(grandChildId, name, brand);
+	}
+
+	/**
 	 * 子カテゴリIDから商品一覧を検索する.
 	 * 
 	 * @param childId    孫カテゴリID
@@ -51,9 +63,21 @@ public class ItemService {
 	}
 
 	/**
+	 * 子カテゴリで検索した時の合計件数を取得する.
+	 * 
+	 * @param childId 孫カテゴリID
+	 * @param name    名前
+	 * @param brand   ブランド
+	 * @return 合計件数
+	 */
+	public Integer searchTotalNumberByChildIdAndSearchValue(Integer childId, String name, String brand) {
+		return itemRepository.countTotalNumberFindByChildAndSearchValue(childId, name, brand);
+	}
+
+	/**
 	 * 親カテゴリIDから商品一覧を検索する.
 	 * 
-	 * @param parentId   孫カテゴリID
+	 * @param parentId   親カテゴリID
 	 * @param name       名前
 	 * @param brand      ブランド
 	 * @param pageNumber ページ番号
@@ -66,6 +90,18 @@ public class ItemService {
 	}
 
 	/**
+	 * 親カテゴリで検索した時の合計件数を取得する.
+	 * 
+	 * @param parentId 親カテゴリID
+	 * @param name     名前
+	 * @param brand    ブランド
+	 * @return 合計件数
+	 */
+	public Integer searchTotalNumberByParentIdAndSearchValue(Integer parentId, String name, String brand) {
+		return itemRepository.countTotalNumberFindByParentAndSearchValue(parentId, name, brand);
+	}
+
+	/**
 	 * 検索値から商品一覧を検索する.
 	 * 
 	 * @param name       名前
@@ -75,7 +111,18 @@ public class ItemService {
 	 */
 	public List<Item> searchItemListBySearchValue(String name, String brand, int pageNumber) {
 		System.out.println("名前・ブランド・検索なしで検索");
-		return itemRepository.findByNameAndBrand(name, brand, pageNumber);
+		return itemRepository.findBySearchValue(name, brand, pageNumber);
+	}
+
+	/**
+	 * 検索値で検索した時の合計件数を取得する.
+	 * 
+	 * @param name  名前
+	 * @param brand ブランd
+	 * @return 合計件数
+	 */
+	public Integer SearchTotalNumberBySearchValue(String name, String brand) {
+		return itemRepository.countTotalNumberfindBySearchValue(name, brand);
 	}
 
 	/**
@@ -86,23 +133,6 @@ public class ItemService {
 	 */
 	public Item searchByItemId(Integer itemId) {
 		return itemRepository.findByitemId(itemId);
-	}
-
-	/**
-	 * 総ページ数を計算する.
-	 * 
-	 * @return 総ページ数
-	 */
-	public Integer countTotalPageNumber() {
-		int itemNumberPerPage = 30;
-		int totalPageNumber = 0;
-		int totalItemNumber = itemRepository.countTotalItemNumber();
-		if (totalItemNumber % 30 == 0) {
-			totalPageNumber = totalItemNumber / itemNumberPerPage;
-		} else {
-			totalPageNumber = totalItemNumber / itemNumberPerPage + 1;
-		}
-		return totalPageNumber;
 	}
 
 	/**
