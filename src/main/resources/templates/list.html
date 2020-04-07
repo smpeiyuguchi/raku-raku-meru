@@ -64,11 +64,17 @@
 
     <!-- pagination -->
     <div class="pages">
-      <nav class="page-nav">
+      <nav class="pzage-nav">
         <ul class="pager">
-          <li class="previous"><a href="#" th:href="@{'/?pageNumber=' + ${pageNumber - 1}}">&larr; prev</a></li>
-          <li class="next"><a href="#" th:href="@{'/?pageNumber=' + ${pageNumber + 1}}">next &rarr;</a></li>
-        </ul>
+       		<li th:unless="${pageNumber==1}" class="previous"><a href="#" th:href="@{'/?pageNumber='+${pageNumber-1}
+       			+'&parentId='+${parentId}
+       			+'&childId='+${childId}+'&grandChildId='+${grandChildId}+'&name='+${searchName}
+       			+'&brand='+${searchBrand}}">&larr; prev</a></li>
+	       	<li class="next"><a href="#" th:href="@{'/?pageNumber='+${pageNumber+1}
+	       		+'&parentId='+${parentId}
+       			+'&childId='+${childId}+'&grandChildId='+${grandChildId}+'&name='+${searchName}
+       			+'&brand='+${searchBrand}}">next &rarr;</a></li>      
+       	</ul>
       </nav>
     </div>
 
@@ -104,8 +110,14 @@
     <div class="pages">
       <nav class="page-nav">
         <ul class="pager">
-          <li class="previous"><a href="#" th:href="@{'/?pageNumber=' + ${pageNumber - 1}}">&larr; prev</a></li>
-          <li class="next"><a href="#" th:href="@{'/?pageNumber=' + ${pageNumber + 1}}">next &rarr;</a></li>
+       		<li th:unless="${pageNumber==1}" class="previous"><a href="#" th:href="@{'/?pageNumber='+${pageNumber-1}
+       			+'&parentId='+${parentId}
+       			+'&childId='+${childId}+'&grandChildId='+${grandChildId}+'&name='+${searchName}
+       			+'&brand='+${searchBrand}}">&larr; prev</a></li>
+	       	<li class="next"><a href="#" th:href="@{'/?pageNumber='+${pageNumber+1}
+	       		+'&parentId='+${parentId}
+       			+'&childId='+${childId}+'&grandChildId='+${grandChildId}+'&name='+${searchName}
+       			+'&brand='+${searchBrand}}">next &rarr;</a></li> 
         </ul>
       </nav>
       <!-- ページ番号を指定して表示するフォーム -->

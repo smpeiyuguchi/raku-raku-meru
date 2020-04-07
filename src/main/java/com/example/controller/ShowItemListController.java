@@ -38,7 +38,6 @@ public class ShowItemListController {
 	@RequestMapping("/")
 	public String showItemList(Model model, Integer parentId, Integer childId, Integer grandChildId, String name,
 			String brand, Integer pageNumber) {
-		setSearchForm(model, parentId, childId, grandChildId, name, brand);
 		List<Item> itemList = null;
 
 		if (name == null) {
@@ -52,47 +51,68 @@ public class ShowItemListController {
 			pageNumber = 1;
 		}
 
-		if (grandChildId != null && grandChildId != 0) {
+		if (parentId == null) {
+			parentId = 0;
+		}
+
+		if (childId == null) {
+			childId = 0;
+		}
+
+		if (grandChildId == null) {
+			grandChildId = 0;
+		}
+
+		// 検索値濃霧によって検索方法を分岐
+		if (grandChildId != 0) {
 			itemList = itemService.searchItemListByGrandChildIdAndSearchValue(grandChildId, name, brand, pageNumber);
-		} else if (childId != null && childId != 0) {
+		} else if (childId != 0) {
 			itemList = itemService.searchItemListByChildIdAndSearchValue(childId, name, brand, pageNumber);
-		} else if (parentId != null && parentId != 0) {
+		} else if (parentId != 0) {
 			itemList = itemService.searchItemListByParentIdAndSearchValue(parentId, name, brand, pageNumber);
 		} else {
 			itemList = itemService.searchItemListBySearchValue(name, brand, pageNumber);
 		}
+		model.addAttribute("itemList", itemList);
 
 		int totalPageNumber = itemService.countTotalPageNumber();
-
-		model.addAttribute("itemList", itemList);
-		model.addAttribute("totalPageNumber", totalPageNumber);
 		model.addAttribute("pageNumber", pageNumber);
+		model.addAttribute("totalPageNumber", totalPageNumber);
+		// 検索フォームに検索値をセット
+		setSearchForm(model, parentId, childId, grandChildId, name, brand);
+		// ページ遷移のパスのパラメータをセット
+		model.addAttribute("parentId", parentId);
+		model.addAttribute("childId", childId);
+		model.addAttribute("grandChildId", grandChildId);
+
 		return "list";
 	}
 
 	/**
-	 * 検索用のフォームをセットする.
+	 * 検索用のフォームに検索値をセットする.
 	 * 
 	 * @param model リクエストスコープ
 	 */
 	public void setSearchForm(Model model, Integer parentId, Integer childId, Integer grandChildId, String name,
 			String brand) {
+		List<Category> parentCategoryList = categoryService.searchParent();
+		model.addAttribute("parentCategoryList", parentCategoryList);
 
-		if (parentId != null && parentId != 0) {
+		if (parentId != 0) {
 			Category parentCategory = categoryService.SearchById(parentId);
 			List<Category> childCategoryList = categoryService.searchChildByParentId(parentId);
 			model.addAttribute("parentCategory", parentCategory);
 			model.addAttribute("childCategoryList", childCategoryList);
 		}
 
-		if (childId != null && childId != 0) {
+		if (childId != 0) {
 			Category childCategory = categoryService.SearchById(childId);
 			List<Category> grandChildCategoryList = categoryService.searchGrandChildByChildId(childId);
 			model.addAttribute("childCategory", childCategory);
 			model.addAttribute("grandChildCategoryList", grandChildCategoryList);
 		}
 
-		if (grandChildId != null && grandChildId != 0) {
+		if (grandChildId != 0) {
 			Category grandChildCategory = categoryService.SearchById(grandChildId);
 			model.addAttribute("grandChildCategory", grandChildCategory);
 		}
@@ -105,7 +125,6 @@ public class ShowItemListController {
 			model.addAttribute("searchBrand", brand);
 		}
 
-		List<Category> parentCategoryList = categoryService.searchParent();
-		model.addAttribute("parentCategoryList", parentCategoryList);
 	};
+
 }
