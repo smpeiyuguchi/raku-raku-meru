@@ -55,7 +55,8 @@
           <label for="category" class="col-sm-2 control-label">category</label>
           <div class="col-sm-8">
             <select class="form-control" id="parent">
-              <option th:value="${item.parent.id}" th:text="${item.parent.name}">- parentCategory -</option>
+              <option th:if="${item.parent.id!=0}" th:value="${item.parent.id}" th:text="${item.parent.name}">- parentCategory -</option>
+              <option th:unless="${item.parent.id!=0}" th:value="0">- parentCategory -</option>
               <option th:value="0">-------------</option>
               <option th:each="parentCategory:${parentCategoryList}" th:value="${parentCategory.id}" th:text="${parentCategory.name}">parentCategory1</option>
             </select>
@@ -65,7 +66,7 @@
           <label for="category" class="col-sm-2 control-label"></label>
           <div class="col-sm-8">
             <select class="form-control" id="child">
-              <option th:value="${item.child.id}" th:text="${item.child.name}">- parentCategory -</option>
+              <option th:if="${item.child.id!=0}" th:value="${item.child.id}" th:text="${item.child.name}">- parentCategory -</option>
               <option th:value="0">-- select parent category --</option>
             </select>
           </div>
@@ -74,7 +75,7 @@
           <label for="category" class="col-sm-2 control-label"></label>
           <div class="col-sm-8">
             <select class="form-control" id="grandChild" name="category" th:field="*{category}">
-              <option th:value="${item.grandChild.id}" th:text="${item.grandChild.name}">- parentCategory -</option>
+              <option th:if="${item.grandChild.id!=0}" th:value="${item.grandChild.id}" th:text="${item.grandChild.name}">- parentCategory -</option>
               <option th:value="0">-- select child category --</option>
             </select>
             <span class="text-danger" th:errors="*{category}">error:may not be empty</span>
