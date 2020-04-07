@@ -95,9 +95,15 @@
             <td class="item-name"><a href="./detail.html" th:href="@{'/show-item-detail?itemId='+${item.id}}"><span th:text="${item.name}">Keyboard</span></a></td>
             <td class="item-price"><span th:text="${item.price}">52.0</span></td>
             <td class="item-category">
-            	<a href="" th:text="${item.parent.name}">Electronics</a> 
-            	/ <a href="" th:text="${item.child.name}">Computers &amp; Tablets</a> 
-           		/ <a href="" th:text="${item.grandChild.name}">Components &amp; Parts</a>
+            	<a href="" th:href="@{'/?parentId='+${item.parent.id}
+       					+'&childId='+${childId}+'&grandChildId='+${grandChildId}+'&name='+${searchName}
+       					+'&brand='+${searchBrand}}" th:text="${item.parent.name}">Electronics</a> 
+            	/ <a href="" th:href="@{'/?parentId='+${parentId}
+       					+'&childId='+${item.child.id}+'&grandChildId='+${grandChildId}+'&name='+${searchName}
+       					+'&brand='+${searchBrand}}" th:text="${item.child.name}">Computers &amp; Tablets</a> 
+           		/ <a href="" th:href="@{'/?parentId='+${parentId}
+       					+'&childId='+${childId}+'&grandChildId='+${item.grandChild.id}+'&name='+${searchName}
+       					+'&brand='+${searchBrand}}" th:text="${item.grandChild.name}">Components &amp; Parts</a>
             </td>
             <td class="item-brand"><a href=""><span th:text="${item.brand}">Razer</span></a></td>
             <td class="item-condition"><span th:text="${item.condition}">3</span></td>
