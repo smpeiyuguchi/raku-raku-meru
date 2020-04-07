@@ -126,7 +126,12 @@
           <div class="form-group">
             <div class="input-group col-xs-6">
               <label></label>
-              <input type="text" name="pageNumber" class="form-control" th:placeholder="${pageNumber}">
+              <input type="hidden" name="parentId" th:value="${parentId}">
+              <input type="hidden" name="childId" th:value="${childId}">
+              <input type="hidden" name="grandChildId" th:value="${grandChildId}">
+              <input type="hidden" name="name" th:value="${searchName}">
+              <input type="hidden" name="brandame" th:value="${searchBrand}">
+              <input type="text" name="pageNumber" class="form-control" th:placeholder="${#numbers.formatInteger(pageNumber,0,'COMMA')}">
               <!-- 総ページ数 -->
               <div class="input-group-addon">/ <span th:text="${#numbers.formatInteger(totalPageNumber,0,'COMMA')}">20</span></div>
             </div>
