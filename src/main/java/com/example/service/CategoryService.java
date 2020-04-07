@@ -19,6 +19,16 @@ public class CategoryService {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	/**
+	 * IDからカテゴリ情報を取得する.
+	 * 
+	 * @param id ID
+	 * @return カテゴリ情報
+	 */
+	public Category SearchById(Integer id) {
+		return categoryRepository.load(id);
+	}
 
 	/**
 	 * 親カテゴリ情報を全件取得する.

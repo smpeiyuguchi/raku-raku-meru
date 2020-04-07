@@ -39,6 +39,20 @@ public class CategoryRepository {
 	private NamedParameterJdbcTemplate template;
 
 	/**
+	 * IDに紐づくカテゴリ情報を取得する.
+	 * 
+	 * @param id ID
+	 * @return カテゴリ情報
+	 */
+	public Category load(Integer id) {
+		String sql = "SELECT id, parent name FROM category WHERE id = :id";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+		return template.queryForObject(sql, param, CATEGORY_ROW_MAPPER);
+	}
+	
+	
+	
+	/**
 	 * 親カテゴリ情報を全て取得する.
 	 * 
 	 * @return 親カテゴリ情報
