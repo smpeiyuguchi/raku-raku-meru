@@ -45,7 +45,7 @@ public class CategoryRepository {
 	 * @return カテゴリ情報
 	 */
 	public Category load(Integer id) {
-		String sql = "SELECT id, parent name FROM category WHERE id = :id";
+		String sql = "SELECT id, parent, name FROM category WHERE id = :id";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
 		return template.queryForObject(sql, param, CATEGORY_ROW_MAPPER);
 	}

@@ -26,10 +26,10 @@ public class ShowItemListController {
 
 	@Autowired
 	private ItemService itemService;
-	
+
 	@Autowired
 	private CategoryService categoryService;
-	
+
 	@ModelAttribute
 	public SearchValueForm setUpSearchValueForm() {
 		return new SearchValueForm();
@@ -44,32 +44,75 @@ public class ShowItemListController {
 	 */
 	@RequestMapping("/")
 	public String showItemList(Model model, SearchValueForm form, Integer pageNumber) {
-		setSearchForm(model);
+		Integer parentId = form.getParentId();
+		Integer childId = form.getChildId();
+		Integer grandChildId = form.getGrandChildId();
+		String name = form.getName();
+		String brand = form.getBrand();
+		setSearchForm(model, parentId, childId, grandChildId, name, brand);
+		List<Item> itemList = null;
+
+		if (name == null) {
+			name = "";
+		}
+		if (brand == null) {
+			brand = "";
+		}
+
 		if (pageNumber == null) {
 			pageNumber = 1;
 		}
 
-		List<Item> itemList = itemService.searchItemListByMultipleCondition(form.getParentId(), form.getChildId(),
-				form.getGrandChildId(), form.getName(), form.getBrand(), pageNumber);
+		if (grandChildId != null && grandChildId != 0) {
+			itemList = itemService.searchItemListByGrandChildIdAndSearchValue(grandChildId, name, brand, pageNumber);
+		} else if (childId != null && childId != 0) {
+			itemList = itemService.searchItemListByChildIdAndSearchValue(grandChildId, name, brand, pageNumber);
+		} else if (parentId != null && parentId != 0) {
+			itemList = itemService.searchItemListByParentIdAndSearchValue(parentId, name, brand, pageNumber);
+		} else {
+			itemList = itemService.searchItemListBySearchValue(name, brand, pageNumber);
+		}
+
 		int totalPageNumber = itemService.countTotalPageNumber();
-				
+
 		model.addAttribute("itemList", itemList);
 		model.addAttribute("totalPageNumber", totalPageNumber);
 		model.addAttribute("pageNumber", pageNumber);
 		return "list";
 	}
-	
+
 	/**
 	 * 検索用のフォームをセットする.
 	 * 
 	 * @param model リクエストスコープ
 	 */
-	public void setSearchForm(Model model) {
+	public void setSearchForm(Model model, Integer parentId, Integer childId, Integer grandChildId, String name,
+			String brand) {
+
+		if (parentId != null && parentId != 0) {
+			Category parentCategory = categoryService.SearchById(parentId);
+			model.addAttribute("parentCategory", parentCategory);
+		}
+
+		if (childId != null && childId != 0) {
+			Category childCategory = categoryService.SearchById(childId);
+			model.addAttribute("childCategory", childCategory);
+		}
+
+		if (grandChildId != null && grandChildId != 0) {
+			Category grandChildCategory = categoryService.SearchById(grandChildId);
+			model.addAttribute("grandChildCategory", grandChildCategory);
+		}
+
+		if (name != null) {
+			model.addAttribute("searchName", name);
+		}
+
+		if (brand != null) {
+			model.addAttribute("searchBrand", brand);
+		}
+
 		List<Category> parentCategoryList = categoryService.searchParent();
-		List<Category> childCategoryList = categoryService.searchChild();
-		List<Category> grandChildCategoryList = categoryService.searchGrandChild();
 		model.addAttribute("parentCategoryList", parentCategoryList);
-		model.addAttribute("childCategoryList", childCategoryList);
-		model.addAttribute("grandChildCategoryList", grandChildCategoryList);
 	};
 }

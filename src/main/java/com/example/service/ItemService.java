@@ -21,42 +21,63 @@ public class ItemService {
 	private ItemRepository itemRepository;
 
 	/**
-	 * 複数の検索条件から商品情報一覧を取得する
+	 * 孫カテゴリIDから商品一覧を検索する.
 	 * 
-	 * @param parentId     親カテゴリーID
-	 * @param childId      子カテゴリーID
-	 * @param grandChildId 孫カテゴリーID
+	 * @param grandChildId 孫カテゴリID
 	 * @param name         名前
 	 * @param brand        ブランド
 	 * @param pageNumber   ページ番号
-	 * @return 商品情報一覧
+	 * @return 商品一覧情報
 	 */
-	public List<Item> searchItemListByMultipleCondition(Integer parentId, Integer childId, Integer grandChildId,
-			String name, String brand, int pageNumber) {
-		List<Item> itemList = null;
-		if (name == null) {
-			name = "";
-		}
-		if (brand == null) {
-			brand = "";
-		}
-		// カテゴリーの検索値の有無によって条件分岐
-		if (grandChildId != null && grandChildId != 0) {
-			System.out.println("孫カテゴリで検索");
-			itemList = itemRepository.findByGrandChildAndSearchValue(grandChildId, name, brand, pageNumber);
-		} else if (childId != null && childId != 0) {
-			System.out.println("子カテゴリで検索");
-			itemList = itemRepository.findByChildAndSearchValue(childId, name, brand, pageNumber);
-		} else if (parentId != null && parentId != 0) {
-			System.out.println("親カテゴリで検索");
-			itemList = itemRepository.findByParentAndSearchValue(parentId, name, brand, pageNumber);
-		} else {
-			System.out.println("名前・ブランド・検索なしで検索");
-			itemList = itemRepository.findByNameAndBrand(name, brand, pageNumber);
-		}
-		return itemList;
+	public List<Item> searchItemListByGrandChildIdAndSearchValue(Integer grandChildId, String name, String brand,
+			int pageNumber) {
+		System.out.println("孫カテゴリで検索");
+		return itemRepository.findByGrandChildAndSearchValue(grandChildId, name, brand, pageNumber);
 	}
-	
+
+	/**
+	 * 子カテゴリIDから商品一覧を検索する.
+	 * 
+	 * @param childId    孫カテゴリID
+	 * @param name       名前
+	 * @param brand      ブランド
+	 * @param pageNumber ページ番号
+	 * @return 商品一覧情報
+	 */
+	public List<Item> searchItemListByChildIdAndSearchValue(Integer childId, String name, String brand,
+			int pageNumber) {
+		System.out.println("子カテゴリで検索");
+		return itemRepository.findByChildAndSearchValue(childId, name, brand, pageNumber);
+	}
+
+	/**
+	 * 親カテゴリIDから商品一覧を検索する.
+	 * 
+	 * @param parentId   孫カテゴリID
+	 * @param name       名前
+	 * @param brand      ブランド
+	 * @param pageNumber ページ番号
+	 * @return 商品一覧情報
+	 */
+	public List<Item> searchItemListByParentIdAndSearchValue(Integer parentId, String name, String brand,
+			int pageNumber) {
+		System.out.println("親カテゴリで検索");
+		return itemRepository.findByParentAndSearchValue(parentId, name, brand, pageNumber);
+	}
+
+	/**
+	 * 検索値から商品一覧を検索する.
+	 * 
+	 * @param name       名前
+	 * @param brand      ブランド
+	 * @param pageNumber ページ番号
+	 * @return 商品一覧情報
+	 */
+	public List<Item> searchItemListBySearchValue(String name, String brand, int pageNumber) {
+		System.out.println("名前・ブランド・検索なしで検索");
+		return itemRepository.findByNameAndBrand(name, brand, pageNumber);
+	}
+
 	/**
 	 * 商品IDから商品情報を検索する.
 	 * 
@@ -83,7 +104,7 @@ public class ItemService {
 		}
 		return totalPageNumber;
 	}
-	
+
 	/**
 	 * 商品情報を登録する.
 	 * 
@@ -92,7 +113,7 @@ public class ItemService {
 	public void addItem(Item item) {
 		itemRepository.insert(item);
 	}
-	
+
 	/**
 	 * 商品情報を更新する.
 	 * 
@@ -101,7 +122,7 @@ public class ItemService {
 	public void updateItem(Item item) {
 		itemRepository.update(item);
 	}
-	
+
 	/**
 	 * 商品を削除する.
 	 * 
