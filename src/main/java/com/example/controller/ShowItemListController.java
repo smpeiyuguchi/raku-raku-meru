@@ -91,12 +91,16 @@ public class ShowItemListController {
 
 		if (parentId != null && parentId != 0) {
 			Category parentCategory = categoryService.SearchById(parentId);
+			List<Category> childCategoryList = categoryService.searchChildByParentId(parentId);
 			model.addAttribute("parentCategory", parentCategory);
+			model.addAttribute("childCategoryList", childCategoryList);
 		}
 
 		if (childId != null && childId != 0) {
 			Category childCategory = categoryService.SearchById(childId);
+			List<Category> grandChildCategoryList = categoryService.searchGrandChildByChildId(childId);
 			model.addAttribute("childCategory", childCategory);
+			model.addAttribute("grandChildCategoryList", grandChildCategoryList);
 		}
 
 		if (grandChildId != null && grandChildId != 0) {

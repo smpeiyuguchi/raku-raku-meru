@@ -33,24 +33,29 @@
     <div id="forms">
       <form action="" th:action="@{/}" class="form-inline" role="form">
         <div class="form-group">
-          <input type="text" class="form-control" id="name" name="name" placeholder="item name"/>
+          <input type="text" class="form-control" id="name" name="name" placeholder="item name" th:value="${searchName}">
         </div>
         <div class="form-group"><i class="fa fa-plus"></i></div>
         <div class="form-group">
           <select class="form-control" name="parentId" id="parent">
-            <option th:value="0">- parentCategory -</option>
+            <option th:if="${parentCategory}" th:value="${parentCategory.id}" th:text="${parentCategory.name}"></option>
+            <option th:unless="${parentCategory}" th:value="0">- parentCategory -</option>
             <option th:each="parentCategory:${parentCategoryList}" th:value="${parentCategory.id}" th:text="${parentCategory.name}">parentCategory1</option>
           </select>
           <select class="form-control" name="childId" id="child">
-            <option th:value="0">- childCategory -</option>
+          	<option th:if="${childCategory}" th:value="${childCategory.id}" th:text="${childCategory.name}"></option>
+            <option th:unless="${childCategory}" th:value="0">- childCategory -</option>
+            <option th:each="childCategory:${childCategoryList}" th:value="${childCategory.id}" th:text="${childCategory.name}"></option>
           </select>
           <select class="form-control" name="grandChildId" id="grandChild">
-            <option th:value="0">- grandChildCategory -</option>
+          	<option th:if="${grandChildCategory}" th:value="${grandChildCategory.id}" th:text="${grandChildCategory.name}"></option>
+            <option th:unless="${grandChildCategory}" th:value="0">- grandChildCategory -</option>
+            <option th:each="grandChildCategory:${grandChildCategoryList}" th:value="${grandChildCategory.id}" th:text="${grandChildCategory.name}"></option>
           </select>
         </div>
         <div class="form-group"><i class="fa fa-plus"></i></div>
         <div class="form-group">
-          <input type="text" class="form-control" name="brand" placeholder="brand"/>
+          <input type="text" class="form-control" name="brand" placeholder="brand" th:value="${searchBrand}">
         </div>
         <div class="form-group"></div>
         <button type="submit" class="btn btn-default"><i class="fa fa-angle-double-right"></i> search</button>
